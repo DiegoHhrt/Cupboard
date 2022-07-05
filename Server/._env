@@ -1,0 +1,4 @@
+// Remove the "_" to use your own env variables
+PORT=
+DB_CNN=
+SECRET_JWT_SEED=
