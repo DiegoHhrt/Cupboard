@@ -31,12 +31,16 @@ const newUser= async (req=request, resp=response) => {
         //inventory object creation on document
         const inventory = new Inventory({ ownedBy: 'user' });
         dbUser.inventory = inventory.id;
+        //wishlist object creation on document
+        const wishList = new WishList({ ownedBy: 'user' });
+        dbUser.wishList = wishList.id;
         //Json webToken generation
         const token = await newJWt(dbUser.id, userName)
         //Create user and auxiliary documents on db
         await dbUser.save();
         await shoppingList.save();
         await inventory.save();
+        await wishList.save();
         //Succes response
         return resp.status(201).json({
             ok: true,

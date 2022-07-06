@@ -27,6 +27,10 @@ const UserSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: "Inventory"
     },
+    wishList: {
+        type: Schema.Types.ObjectId,
+        ref: "WishList"
+    },
     budget: {
         type: Number,
         default: 0
