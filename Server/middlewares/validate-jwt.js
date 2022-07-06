@@ -12,9 +12,9 @@ const validateJWT = (req=request, resp=response, next) => {
     }
     try 
     {
-        const{uid, name} = jwt.verify(token, process.env.SECRET_JWT_SEED);
+        const{uid, userName} = jwt.verify(token, process.env.SECRET_JWT_SEED);
         req.uid=uid;
-        req.name=name;
+        req.userName=userName;
     } 
     catch (error) 
     {
