@@ -1,9 +1,9 @@
 const{response} = require('express');
 const{request}=require('express');
-const User = require('../models/User');
+const User = require('../../models/User');
 const bcrypt = require('bcryptjs');
-const { newJWt } = require('../helpers/jwt');
-const { ShoppingList, Inventory } = require('../models/Lists');
+const { newJWt } = require('../../helpers/jwt');
+const { ShoppingList, Inventory } = require('../../models/Lists');
 
 const newUser= async (req=request, resp=response) => {
     const {email, userName, password} = req.body;

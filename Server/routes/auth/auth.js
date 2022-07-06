@@ -1,8 +1,8 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { newUser, userLogin, tokenRenew } = require('../controllers/auth');
-const { fieldValidation } = require('../middlewares/fieldValidation');
-const { validateJWT } = require('../middlewares/validate-jwt');
+const { newUser, userLogin, tokenRenew } = require('../../controllers/auth/auth');
+const { fieldValidation } = require('../../middlewares/fieldValidation');
+const { validateJWT } = require('../../middlewares/validate-jwt');
 
 const mailExp = new RegExp(/^[( \w \. \-)]{4,20}@((g|hot)mail|outlook|live).com$/);
 

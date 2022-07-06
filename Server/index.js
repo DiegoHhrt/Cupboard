@@ -20,12 +20,13 @@ app.use(express.json());
 
 //Routes
     //authentication
-app.use( '/api/auth', require('./routes/auth') );
+app.use( '/api/auth', require('./routes/auth/auth') );
     //get information
-app.use( '/api/getitems', require('./routes/getitems') );
-app.use('/api/gethouseholdinfo', require('./routes/gethouseholdinfo'));
-app.use('/api/getuserinfo'), require('./routes/getuserinfo');
-app.use( '/api/update', require('./routes/update') );
+app.use( '/api/getitems', require('./routes/getinfo/getitems') );
+app.use('/api/gethouseholdinfo', require('./routes/getinfo/gethouseholdinfo'));
+app.use('/api/getuserinfo'), require('./routes/getinfo/getuserinfo');
+    //update information
+app.use( '/api/update', require('./routes/update/update') );
 
 app.listen(process.env.PORT, () =>{
     console.log(`Server running in port ${ process.env.PORT }`)
