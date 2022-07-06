@@ -1,6 +1,13 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 const { fieldValidation } = require('../../middlewares/fieldValidation');
+const {
+    getHousehold,
+    getHouseholdInventory,
+    getHShoppingList,
+    getHPlannedRecipes,
+    getHNutritionGoals
+} = require('../../controllers/getinfo/getHouseholdInfo');
 
 const router = Router();
 
