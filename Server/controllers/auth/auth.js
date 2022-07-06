@@ -3,7 +3,7 @@ const{request}=require('express');
 const User = require('../../models/User');
 const bcrypt = require('bcryptjs');
 const { newJWt } = require('../../helpers/jwt');
-const { ShoppingList, Inventory } = require('../../models/Lists');
+const { ShoppingList, Inventory, Wishlist } = require('../../models/Lists');
 
 const newUser= async (req=request, resp=response) => {
     const {email, userName, password} = req.body;
@@ -32,7 +32,7 @@ const newUser= async (req=request, resp=response) => {
         const inventory = new Inventory({ ownedBy: 'user' });
         dbUser.inventory = inventory.id;
         //wishlist object creation on document
-        const wishList = new WishList({ ownedBy: 'user' });
+        const wishList = new Wishlist({ ownedBy: 'user' });
         dbUser.wishList = wishList.id;
         //Json webToken generation
         const token = await newJWt(dbUser.id, userName)
