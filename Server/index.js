@@ -19,7 +19,13 @@ app.use(cors());
 app.use(express.json());
 
 //Routes
+    //authentication
 app.use( '/api/auth', require('./routes/auth') );
+    //get information
+app.use( '/api/getitems', require('./routes/getitems') );
+app.use('/api/gethouseholdinfo', require('./routes/gethouseholdinfo'));
+app.use('/api/getuserinfo'), require('./routes/getuserinfo');
+app.use( '/api/update', require('./routes/update') );
 
 app.listen(process.env.PORT, () =>{
     console.log(`Server running in port ${ process.env.PORT }`)
