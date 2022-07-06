@@ -49,6 +49,9 @@ plannedFoodSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: "Item"
     }],
+    recipeLink: {
+        type: String    
+    },
     plannedDate: {
         type: Date
     },
