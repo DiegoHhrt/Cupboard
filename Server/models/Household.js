@@ -9,6 +9,10 @@ const HouseholdSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: "User"
     }],
+    admins: [{
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    }],
     shoppingList: {
         type: Schema.Types.ObjectId,
         ref: "ShoppingList"

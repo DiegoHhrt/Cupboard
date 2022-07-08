@@ -1,9 +1,10 @@
 const{response} = require('express');
 const{request}=require('express');
 const User = require('../../models/User');
+const {Household} = require('../../models/Household');
 const bcrypt = require('bcryptjs');
 const { newJWt } = require('../../helpers/jwt');
-const { ShoppingList, Inventory, Wishlist } = require('../../models/Lists');
+const { ShoppingList, Inventory } = require('../../models/Lists');
 
 const newUser= async (req=request, resp=response) => {
     const {email, userName, password} = req.body;
@@ -89,7 +90,7 @@ const userLogin = async (req=request, resp=response) => {
 
         //response
 
-        resp.json({
+        resp.status(200).json({
             ok: true,
             uid: dbUser.id,
             token
@@ -104,6 +105,65 @@ const userLogin = async (req=request, resp=response) => {
         });  
     }
 }
+
+const createHousehold = async (req=request, resp=response) => {
+    const {name, requestorId, lowLevel, currency, budget} = req.body;
+    const info = {
+        name,
+        members: [requestorId],
+        admins: [requestorId],
+        lowLevel,
+        currency,
+        budget
+    }
+    try {
+        //Verifies if user exists
+        const user = await User.findById(requestorId);
+        if(!user) {
+            return resp.status(400).json({
+                ok:false,
+                msg: "User not found"
+            })
+        }
+        //Verifies if user belongs to a household already
+        if(user.household) {
+            return resp.status(400).json({
+                ok:false,
+                msg: "User already has a household"
+            })
+        }
+        //Create household and auxiliary objects with model
+        const household = new Household(info);
+        const shoppingList = new ShoppingList({ ownedBy: 'Household', ownerId: household.id });
+        const inventory = new Inventory({ ownedBy: 'Household', ownerId: household.id });
+        
+        household.shoppingList = shoppingList.id;
+        household.inventory = inventory.id;
+        //Save household and auxiliary documents on db
+        await household.save();
+        await shoppingList.save();
+        await inventory.save();
+
+        //Update user with household id
+        user.household = household.id;
+        await user.save();
+
+        //Response
+        return resp.status(201).json({
+            ok: true,
+            household: household.id,
+            user: user.id
+        });
+
+    } 
+    catch (error) {
+        console.log(error);
+        return resp.status(500).json({
+            ok:false,
+            msg: "Please contact admin"
+        });      
+    }
+};
 
 const tokenRenew = async (req=request, resp=response) => {
     const {uid}=req;
@@ -127,5 +187,6 @@ const tokenRenew = async (req=request, resp=response) => {
 module.exports={
     newUser,
     userLogin,
+    createHousehold,
     tokenRenew
 }

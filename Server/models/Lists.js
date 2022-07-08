@@ -1,9 +1,14 @@
 const { Schema, model } = require("mongoose");
 
 const inventorySchema = Schema({
+    ownerId: {
+        type: Schema.Types.ObjectId,
+        refPath: "ownedBy",
+        required: true
+    },
     ownedBy: {
         type: String,
-        enum: ["household", "user"],
+        enum: ["Household", "User"],
         required: true
     },
     items:{
@@ -21,9 +26,14 @@ const inventorySchema = Schema({
 });
 
 const shoppingListSchema = Schema({
+    ownerId: {
+        type: Schema.Types.ObjectId,
+        refPath: "ownedBy",
+        required: true
+    },
     ownedBy: {
         type: String,
-        enum: ["household", "user"],
+        enum: ["Household", "User"],
         required: true
     },
     items:{
@@ -40,9 +50,9 @@ const shoppingListSchema = Schema({
 });
 
 const wishlistSchema = Schema({
-    ownedBy: {
-        type: String,
-        enum: ["household", "user"],
+    ownerId: {
+        type: Schema.Types.ObjectId,
+        refPath: "User",
         required: true
     },
     items:{

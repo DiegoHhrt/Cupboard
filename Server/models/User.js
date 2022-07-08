@@ -19,6 +19,10 @@ const UserSchema = Schema({
         type: String,
         required: true
     },
+    household: {
+        type: Schema.Types.ObjectId,
+        ref: "Household"
+    },
     shoppingList: {
         type: Schema.Types.ObjectId,
         ref: "ShoppingList"
