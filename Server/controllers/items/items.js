@@ -1,7 +1,7 @@
 const{response} = require('express');
 const{request}=require('express');
 
-const updateUser = async(req = request, resp = response) => {
+const createItem = async(req = request, resp = response) => {
     try {
         
     } 
@@ -14,10 +14,10 @@ const updateUser = async(req = request, resp = response) => {
     }
 };
 
-const updateUserInventory = async(req = request, resp = response) => {
+const updateItem = async(req = request, resp = response) => {
     try {
-
-    }
+        
+    } 
     catch (error) {
         console.log(error);
         return resp.status(500).json({
@@ -27,10 +27,10 @@ const updateUserInventory = async(req = request, resp = response) => {
     }
 };
 
-const updateUShoppingList = async(req = request, resp = response) => {
+const getItem = async(req = request, resp = response) => {
     try {
-
-    }
+        
+    } 
     catch (error) {
         console.log(error);
         return resp.status(500).json({
@@ -40,10 +40,10 @@ const updateUShoppingList = async(req = request, resp = response) => {
     }
 };
 
-const updateUWishlist = async(req = request, resp = response) => {
+const getItems = async(req = request, resp = response) => {
     try {
-
-    }
+        
+    } 
     catch (error) {
         console.log(error);
         return resp.status(500).json({
@@ -53,10 +53,10 @@ const updateUWishlist = async(req = request, resp = response) => {
     }
 };
 
-const editUserHousehold = async(req = request, resp = response) => {
+const deleteItem = async(req = request, resp = response) => {
     try {
-
-    }
+        
+    } 
     catch (error) {
         console.log(error);
         return resp.status(500).json({
@@ -67,9 +67,9 @@ const editUserHousehold = async(req = request, resp = response) => {
 };
 
 module.exports={
-    updateUser,
-    updateUserInventory,
-    updateUShoppingList,
-    updateUWishlist,
-    editUserHousehold
+    createItem,
+    updateItem,
+    getItem,
+    getItems,
+    deleteItem
 };

@@ -12,7 +12,8 @@ const router = Router();
 
 //Gets an user's information
 router.get('/user', [
-
+    check('userId', 'User ID is required').isMongoId(),
+    fieldValidation
 ], getUser);
 
 //Gets an user's inventory
