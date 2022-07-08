@@ -5,7 +5,7 @@ const {Household} = require('../../models/Household');
 const bcrypt = require('bcryptjs');
 const { newJWt } = require('../../helpers/jwt');
 const { ShoppingList, Inventory } = require('../../models/Lists');
-
+const {NutritionGoals} = require('../../models/Nutrition');
 const newUser= async (req=request, resp=response) => {
     const {email, userName, password} = req.body;
 
@@ -165,6 +165,65 @@ const createHousehold = async (req=request, resp=response) => {
     }
 };
 
+const createNutritionGoals = async (req=request, resp=response) => {
+    const {requestorId, householdId} = req.body;
+    const info = req.body;
+    try {
+        //Verifies if user exists
+        const user = await User.findById(requestorId);
+        if(!user) {
+            return resp.status(400).json({
+                ok:false,
+                msg: "User not found"
+            })
+        }
+        //Verifies if household exists
+        const household = await Household.findById(householdId);
+        if(!household) {
+            return resp.status(400).json({
+                ok:false,
+                msg: "Household not found"
+            })
+        }
+        //Verifies if user belongs to the household
+        if(!household.members.includes(requestorId)) {
+            return resp.status(400).json({
+                ok:false,
+                msg: "User does not belong to the household"
+            })
+        }
+        //Verifies if user is a household admin
+        if(!household.admins.includes(requestorId)) {
+            return resp.status(401).json({
+                ok:false,
+                msg: "User is not an admin of the household"
+            })
+        }
+
+        //Create nutrition goals and assigns to household
+        const nutritionGoals = new NutritionGoals(info);
+        household.nutritionGoals = nutritionGoals.id;
+        await household.save();
+        await nutritionGoals.save();
+
+        console.log(household, nutritionGoals);
+
+        //Response
+        return resp.status(201).json({
+            ok: true,
+            nutritionGoals: nutritionGoals.id,
+            household: household.id
+        });
+    } 
+    catch (error) {
+        console.log(error);
+        return resp.status(500).json({
+            ok:false,
+            msg: "Please contact admin"
+        });
+    }
+};
+
 const tokenRenew = async (req=request, resp=response) => {
     const {uid}=req;
 
@@ -188,5 +247,6 @@ module.exports={
     newUser,
     userLogin,
     createHousehold,
+    createNutritionGoals,
     tokenRenew
 }
