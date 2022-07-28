@@ -11,7 +11,7 @@ const {
 
 const router = Router();
 
-//Creates a new item in a shopping list
+//Creates a new item in a list
 router.post('/create-item', [
     check('listId', 'List ID is required').isMongoId(),
     check('requestorId', 'Requestor ID is required').isMongoId(),

@@ -91,7 +91,16 @@ const createListItem = async(req = request, resp = response) => {
         if(list.items)
         {
             list?.items.push(item);
+            //Adds item to history if it was added to the inventory
+            if(listType === 'I'){
+                list?.history.push(item);
+            }
+            //Adds cost of the item to the total cost of the list if it's added to the shopping list
+            if(listType === 'SL'){
+                list?.totalCost += item.cost;
+            }
             await list.save();
+            
             return resp.status(201).json({
                 ok:true,
                 msg: "Item created",
@@ -147,6 +156,11 @@ const updateItem = async(req = request, resp = response) => {
         }
         //Updates the item
         item[field] = value;
+        //Updates the total cost of the shopping list if the item cost is updated
+        if(isInListType === 'SL' && field === 'cost'){
+            list.totalCost -= item.cost;
+            list.totalCost += value;
+        }
         await list.save();
         return resp.status(200).json({
             ok:true,
@@ -210,6 +224,10 @@ const deleteItem = async(req = request, resp = response) => {
         }
         //Deletes the item
         list.items = list.items.filter(item => item.id !== itemId);
+        //Updates the total cost of the shopping list if the item belongs to a shopping list
+        if(isInListType === 'SL'){
+            list.totalCost -= item.cost;
+        }
         await list.save();
         return resp.status(200).json({
             ok:true,
