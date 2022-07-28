@@ -26,7 +26,6 @@ app.use( '/api/getitems', require('./routes/getinfo/getListItems') );
 app.use('/api/gethouseholdinfo', require('./routes/getinfo/getHouseholdInfo'));
 app.use('/api/getuserinfo', require('./routes/getinfo/getUserInfo'));
     //update information
-app.use( '/api/updateitems', require('./routes/update/updateListItems') );
 app.use('/api/updatehouseholdinfo', require('./routes/update/updateHouseholdInfo'));
 app.use('/api/updateuserinfo', require('./routes/update/updateUserInfo'));
     //manipulate items
