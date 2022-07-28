@@ -45,7 +45,7 @@ router.post('/c-nutritiongoals', [
     check('requestorId', 'Requestor ID is not optional').isMongoId(),
     check('householdId', 'Household ID is not optional').isMongoId(),
     check('date', 'Insert a valid starting date (tomorrow)').isDate().isAfter(),
-    check('period', 'Insert a valid period').not().isEmpty(),
+    check('period', 'Insert a valid period').isIn(["daily", "weekly", "monthly"]),
     check('cal', 'Insert a numeric value').optional().isInt({min:-1}),
     check('protein', 'Insert a numeric value').optional().isInt({min:-1}),
     check('carbs', 'Insert a numeric value').optional().isInt({min:-1}),

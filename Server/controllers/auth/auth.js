@@ -4,7 +4,7 @@ const User = require('../../models/User');
 const {Household} = require('../../models/Household');
 const bcrypt = require('bcryptjs');
 const { newJWt } = require('../../helpers/jwt');
-const { ShoppingList, Inventory } = require('../../models/Lists');
+const { ShoppingList, Inventory, Wishlist } = require('../../models/Lists');
 const {NutritionGoals} = require('../../models/Nutrition');
 const newUser= async (req=request, resp=response) => {
     const {email, userName, password} = req.body;
@@ -27,13 +27,13 @@ const newUser= async (req=request, resp=response) => {
         const salt = bcrypt.genSaltSync();
         dbUser.password = bcrypt.hashSync(password, salt);
         //shopping list object creation on document
-        const shoppingList = new ShoppingList({ ownedBy: 'user' });
+        const shoppingList = new ShoppingList({ownerId:dbUser.id, ownedBy: 'User' });
         dbUser.shoppingList = shoppingList.id;
         //inventory object creation on document
-        const inventory = new Inventory({ ownedBy: 'user' });
+        const inventory = new Inventory({ownerId:dbUser.id, ownedBy: 'User' });
         dbUser.inventory = inventory.id;
         //wishlist object creation on document
-        const wishList = new Wishlist({ ownedBy: 'user' });
+        const wishList = new Wishlist({ownerId:dbUser.id, ownedBy: 'User' });
         dbUser.wishList = wishList.id;
         //Json webToken generation
         const token = await newJWt(dbUser.id, userName)
@@ -166,8 +166,26 @@ const createHousehold = async (req=request, resp=response) => {
 };
 
 const createNutritionGoals = async (req=request, resp=response) => {
-    const {requestorId, householdId} = req.body;
-    const info = req.body;
+    const { requestorId, householdId, date, 
+            period, cal, protein, carbs, 
+            fat, fiber, sugar, sodium,
+            cholesterol, animalBalanceGoal,
+            vegetalBalanceGoal
+    } = req.body;
+    const info = {
+        householdId, period,
+        startingDate: date,
+        totalPeriodCalories: cal,
+        totalPeriodProtein: protein,
+        totalPeriodCarbs: carbs,
+        totalPeriodFat: fat,
+        totalPeriodFiber: fiber,
+        totalPeriodSugar: sugar,
+        totalPeriodSodium: sodium,
+        totalPeriodCholesterol: cholesterol,
+        animalBalanceGoal,
+        vegetalBalanceGoal
+    };
     try {
         //Verifies if user exists
         const user = await User.findById(requestorId);
