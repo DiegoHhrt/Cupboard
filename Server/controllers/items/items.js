@@ -1,7 +1,124 @@
 const{response} = require('express');
 const{request}=require('express');
+const { ShoppingList, Inventory, Wishlist } = require('../../models/Lists');
+const {Household} = require('../../models/Household');
+const {Item} = require('../../models/Item');
+const User = require('../../models/User');
 
-const createItem = async(req = request, resp = response) => {
+const listValidation = async(listId, requestorId, resp, type) => {
+    //Verifies if the list exists and the list type
+    let list = {};
+    if(type === 'SL'){
+        list = await ShoppingList.findById(listId);
+    }
+    else if(type === 'I'){
+        list = await Inventory.findById(listId);
+    }
+    else if(type === 'W'){
+        list = await Wishlist.findById(listId);
+    }
+    else {
+        return resp.status(400).json({
+            ok:false,
+            msg: "Incorrect list type, contact admin"
+        });
+    }
+
+    if (!list) {
+        return resp.status(404).json({
+            message: 'List does not exist'
+        });
+    }
+    //Verifies if requestor user exists
+    const reqUser = await User.findById(requestorId);
+    if(!reqUser) {
+        return resp.status(404).json({
+            ok:false,
+            msg: "User not found"
+        })
+    }
+    //Verifies if the list is owned by a household or a user
+    if (list.ownedBy === 'Household') {
+        const household = await Household.findById(list.ownerId);
+        if (!household) {
+            return resp.status(404).json({
+                message: 'Household does not exist'
+            });
+        }
+        //Verifies if the user is a member of the household
+        if (!household.members.includes(requestorId)) {
+            return resp.status(403).json({
+                message: 'User is not a member of the household'
+            });
+        }
+    }
+    else if (list.ownedBy === 'User') {
+        const user = await User.findById(list.ownerId);
+        if (!user) {
+            return resp.status(404).json({
+                message: 'User does not exist'
+            });
+        }
+        //Verifies if the user is the owner of the list
+        if (user.id !== reqUser.id) {
+            return resp.status(403).json({
+                message: 'User is not the owner of the list'
+            });
+        }
+    }
+
+    return list;
+}
+
+const createListItem = async(req = request, resp = response) => {
+    const { listId, requestorId, name, 
+            edible, category, purchaseDate, 
+            currentAmmount, boughtAmmount, unit, 
+            lowLevel, cost, imgUrl, listType} = req.body;
+    const info = {
+        name, edible, category, purchaseDate, 
+        currentAmmount, boughtAmmount, unit, lowLevel, 
+        cost, imgUrl
+    };
+    try {   
+        //Calls to validaion function to ensure everything is correct   
+        const list = await listValidation(listId, requestorId, resp, listType);        
+
+        //Creates the item
+        const item = new Item(info);
+        
+        //saves item to list
+        if(list.items)
+        {
+            list?.items.push(item);
+            await list.save();
+            return resp.status(201).json({
+                ok:true,
+                msg: "Item created",
+                item
+            });
+        }
+        else {
+            return resp.status(500).json({
+                ok:false,
+                msg: "Something went wrong"
+            });
+        }
+
+    } 
+    catch (error) {
+        console.log(error);
+        return resp.status(500).json({
+            ok:false,
+            msg: "Please contact admin"
+        });
+    }
+};
+
+const createRecipeItem = async(req = request, resp = response) => {
+    const {listId} = req.body;
+    const info = req.body;
+    const listType = '';
     try {
         
     } 
@@ -15,8 +132,28 @@ const createItem = async(req = request, resp = response) => {
 };
 
 const updateItem = async(req = request, resp = response) => {
+    const { listId, requestorId, field, value, isInListType, itemId } = req.body;
     try {
-        
+        //Calls to validaion function to ensure everything is correct
+        const list = await listValidation(listId, requestorId, resp, isInListType);
+
+        //Finds the item in the list 
+        const item = list.items.find(item => item.id === itemId);
+        if (!item) {
+            return resp.status(404).json({
+                ok:false,
+                msg: "Item not found"
+            });
+        }
+        //Updates the item
+        item[field] = value;
+        await list.save();
+        return resp.status(200).json({
+            ok:true,
+            msg: "Item updated",
+            item
+        });
+
     } 
     catch (error) {
         console.log(error);
@@ -28,21 +165,25 @@ const updateItem = async(req = request, resp = response) => {
 };
 
 const getItem = async(req = request, resp = response) => {
+    const { listId, requestorId, itemId, isInListType } = req.body;
     try {
-        
-    } 
-    catch (error) {
-        console.log(error);
-        return resp.status(500).json({
-            ok:false,
-            msg: "Please contact admin"
-        });
-    }
-};
+        //Calls to validaion function to ensure everything is correct
+        const list = await listValidation(listId, requestorId, resp, isInListType);
 
-const getItems = async(req = request, resp = response) => {
-    try {
-        
+        //Finds the item in the list
+        const item = list.items.find(item => item.id === itemId);
+        if (!item) {
+            return resp.status(404).json({
+                ok:false,
+                msg: "Item not found"
+            });
+        }
+
+        return resp.status(200).json({
+            ok:true,
+            msg: "Item found",
+            item
+        });
     } 
     catch (error) {
         console.log(error);
@@ -54,8 +195,26 @@ const getItems = async(req = request, resp = response) => {
 };
 
 const deleteItem = async(req = request, resp = response) => {
+    const { listId, requestorId, itemId, isInListType } = req.body;
     try {
-        
+        //Calls to validaion function to ensure everything is correct
+        const list = await listValidation(listId, requestorId, resp, isInListType);
+
+        //Finds the item in the list
+        const item = list.items.find(item => item.id === itemId);
+        if (!item) {
+            return resp.status(404).json({
+                ok:false,
+                msg: "Item not found"
+            });
+        }
+        //Deletes the item
+        list.items = list.items.filter(item => item.id !== itemId);
+        await list.save();
+        return resp.status(200).json({
+            ok:true,
+            msg: "Item deleted"
+        });
     } 
     catch (error) {
         console.log(error);
@@ -67,9 +226,9 @@ const deleteItem = async(req = request, resp = response) => {
 };
 
 module.exports={
-    createItem,
+    createListItem,
+    createRecipeItem,
     updateItem,
     getItem,
-    getItems,
     deleteItem
 };

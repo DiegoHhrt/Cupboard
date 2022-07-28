@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 
 function arrayMin(array) {
-    return array.lenght > 0;
+    return array.length > 0;
 };
 
 const ItemSchema = Schema({
@@ -41,6 +41,9 @@ const ItemSchema = Schema({
     cost:{
         type: Number,
         min: 0
+    },
+    imgUrl: {
+        type: String
     }
 });
 
@@ -62,6 +65,7 @@ const Item = model("Item", ItemSchema);
 const Edible = model("Edible", edibleSchema);
 
 module.exports = {
+    Edible,
     Item,
-    Edible
+    ItemSchema
 };

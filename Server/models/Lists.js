@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const { ItemSchema } = require("./Item");
 
 const inventorySchema = Schema({
     ownerId: {
@@ -12,16 +13,12 @@ const inventorySchema = Schema({
         required: true
     },
     items:{
-        type: [{
-            type: Schema.Types.ObjectId,
-            ref: "Item"
-        }]
+        type: [ItemSchema],
+        default: []
     },
     history:{
-        type: [{
-            type: Schema.Types.ObjectId,
-            ref: "Item"
-        }]
+        type: [ItemSchema],
+        default: []
     }
 });
 
@@ -37,10 +34,8 @@ const shoppingListSchema = Schema({
         required: true
     },
     items:{
-        type: [{
-            type: Schema.Types.ObjectId,
-            ref: "Item"
-        }]
+        type: [ItemSchema],
+        default: []
     },
     totalCost: {
         type: Number,
@@ -56,10 +51,8 @@ const wishlistSchema = Schema({
         required: true
     },
     items:{
-        type: [{
-            type: Schema.Types.ObjectId,
-            ref: "Item"
-        }]
+        type: [ItemSchema],
+        default: []
     }
 });
 
