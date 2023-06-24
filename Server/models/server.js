@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { dbConnection } = require('../database/config');
+const { authRoutes, householdRoutes, listItemsRoutes, userRoutes } = require('../routes');
 
 class Server {
     constructor() {
@@ -10,13 +11,12 @@ class Server {
         this.dbConnect();
 
         //APi routes
-        this.authPath = '/api/auth';
-        this.getItemsPath = '/api/getitems';
-        this.getHouseholdInfoPath = '/api/gethouseholdinfo';
-        this.getUserInfoPath = '/api/getuserinfo';
-        this.updateHouseholdInfoPath = '/api/updatehouseholdinfo';
-        this.updateUserinfoPath = '/api/updateuserinfo';
-        this.itemsPath = '/api/items';
+        this.paths = {
+            authPath: '/api/auth',
+            HouseholdPath: '/api/household',
+            ListItemsPath: '/api/list-items',
+            UserPath: '/api/user',
+        };
 
         //Middlewares
         this.middlewares();
@@ -41,31 +41,13 @@ class Server {
 
     routes() {
         //authentication
-        this.app.use(this.authPath, require('../routes/auth/auth'));
-        //get information
-        this.app.use(
-            this.getItemsPath,
-            require('../routes/getinfo/getListItems')
-        );
-        this.app.use(
-            this.getHouseholdInfoPath,
-            require('../routes/getinfo/getHouseholdInfo')
-        );
-        this.app.use(
-            this.getUserInfoPath,
-            require('../routes/getinfo/getUserInfo')
-        );
-        //update information
-        this.app.use(
-            this.updateHouseholdInfoPath,
-            require('../routes/update/updateHouseholdInfo')
-        );
-        this.app.use(
-            this.updateUserinfoPath,
-            require('../routes/update/updateUserInfo')
-        );
-        //manipulate items
-        this.app.use(this.itemsPath, require('../routes/items/items'));
+        this.app.use(this.paths.authPath, authRoutes);
+        //Household
+        this.app.use(this.paths.HouseholdPath, householdRoutes);
+        //Items
+        this.app.use(this.paths.ListItemsPath, listItemsRoutes);
+        //User
+        this.app.use(this.paths.UserPath, userRoutes);
     }
 
     listen() {

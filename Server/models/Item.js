@@ -67,6 +67,4 @@ const Edible = model('Edible', edibleSchema);
 module.exports = {
     Edible,
     Item,
-    ItemSchema,
-    edibleSchema,
 };
