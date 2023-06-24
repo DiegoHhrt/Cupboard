@@ -14,18 +14,9 @@ const {
  * @param {import('express').Response} resp
  */
 const newUser = async (req, resp) => {
-    const { email, userName, password } = req.body;
+    const { userName, password } = req.body;
 
     try {
-        const user = await User.findOne({ email });
-
-        //Verify unique email
-        if (user) {
-            return resp.status(400).json({
-                ok: false,
-                msg: 'User already exists',
-            });
-        }
         //Create user with model
         const dbUser = new User(req.body);
         //Password hash
@@ -43,11 +34,13 @@ const newUser = async (req, resp) => {
         //Json webToken generation
         const token = await newJWt(dbUser.id, userName);
         //Create user and auxiliary documents on db
-        await dbUser.save();
-        await shoppingList.save();
-        await inventory.save();
-        await wishList.save();
-        //Succ
+        await Promise.all([
+            dbUser.save(),
+            shoppingList.save(),
+            inventory.save(),
+            wishList.save(),
+        ]);
+        //Successful response
         return resp.status(201).json({
             ok: true,
             uid: dbUser.id,
@@ -68,26 +61,17 @@ const newUser = async (req, resp) => {
  */
 const userLogin = async (req, resp) => {
     const { email, password } = req.body;
-
     try {
         const dbUser = await User.findOne({ email });
-        //Existing email
-        if (!dbUser) {
-            return resp.status(400).json({
-                ok: false,
-                msg: 'Mail or password is not valid',
-            });
-        }
         //Confirm matching password
         const validPassword = bcrypt.compareSync(password, dbUser.password);
 
         if (!validPassword) {
             return resp.status(400).json({
                 ok: false,
-                msg: 'mail or Password is not valid',
+                msg: 'Mail and password do not match',
             });
         }
-
         //new jwt
         const token = await newJWt(dbUser.id, dbUser.userName);
 
@@ -110,50 +94,37 @@ const userLogin = async (req, resp) => {
  * @param {import('express').Response} resp
  */
 const createHousehold = async (req, resp) => {
-    const { name, requestorId, lowLevel, currency, budget } = req.body;
-    //TODO: simplify data value extraction
+    const { requestorId, ...data } = req.body;
     const info = {
-        budget,
-        currency,
-        lowLevel,
-        name,
+        ...data,
         admins: [requestorId],
         members: [requestorId],
     };
     try {
-        //Verifies if user exists
         const user = await User.findById(requestorId);
-        if (!user) {
-            return resp.status(400).json({
-                ok: false,
-                msg: 'User not found',
-            });
-        }
-        //Verifies if user belongs to a household already
-        if (user.household) {
-            return resp.status(400).json({
-                ok: false,
-                msg: 'User already has a household',
-            });
-        }
+
         //Create household and auxiliary objects with model
         const household = new Household(info);
         const shoppingList = new ShoppingList({
             ownedBy: 'Household',
             ownerId: household.id,
         });
-        const inventory = new Inventory({ ownedBy: 'Household', ownerId: household.id });
+        const inventory = new Inventory({
+            ownedBy: 'Household',
+            ownerId: household.id,
+        });
 
         household.shoppingList = shoppingList.id;
         household.inventory = inventory.id;
-        //Save household and auxiliary documents on db
-        await household.save();
-        await shoppingList.save();
-        await inventory.save();
-
         //Update user with household id
         user.household = household.id;
-        await user.save();
+        //Save household and auxiliary documents on db
+        await Promise.all([
+            household.save(),
+            shoppingList.save(),
+            inventory.save(),
+            user.save(),
+        ]);
 
         //Response
         return resp.status(201).json({
@@ -175,65 +146,14 @@ const createHousehold = async (req, resp) => {
  * @param {import('express').Response} resp
  */
 const createNutritionGoals = async (req, resp) => {
-    //TODO: simplify data value extraction
-    const {
-        animalBalanceGoal,
-        cal,
-        carbs,
-        cholesterol,
-        date,
-        fat,
-        fiber,
-        householdId,
-        period,
-        protein,
-        requestorId,
-        sodium,
-        sugar,
-        vegetalBalanceGoal,
-    } = req.body;
-    const info = {
-        animalBalanceGoal,
-        householdId,
-        period,
-        startingDate: date,
-        totalPeriodCalories: cal,
-        totalPeriodCarbs: carbs,
-        totalPeriodCholesterol: cholesterol,
-        totalPeriodFat: fat,
-        totalPeriodFiber: fiber,
-        totalPeriodProtein: protein,
-        totalPeriodSodium: sodium,
-        totalPeriodSugar: sugar,
-        vegetalBalanceGoal,
-    };
+    const { householdId, requestorId } = req.body;
+    const { animalProductBalance, vegetalProductBalance, ...info } = req.body;
     try {
-        //Verifies if user exists
-        const user = await User.findById(requestorId);
-        if (!user) {
-            return resp.status(400).json({
-                ok: false,
-                msg: 'User not found',
-            });
-        }
         //Verifies if household exists
         const household = await Household.findById(householdId);
-        if (!household) {
-            return resp.status(400).json({
-                ok: false,
-                msg: 'Household not found',
-            });
-        }
-        //Verifies if user belongs to the household
-        if (!household.members.includes(requestorId)) {
-            return resp.status(400).json({
-                ok: false,
-                msg: 'User does not belong to the household',
-            });
-        }
         //Verifies if user is a household admin
         if (!household.admins.includes(requestorId)) {
-            return resp.status(401).json({
+            return resp.status(403).json({
                 ok: false,
                 msg: 'User is not an admin of the household',
             });
@@ -242,10 +162,7 @@ const createNutritionGoals = async (req, resp) => {
         //Create nutrition goals and assigns to household
         const nutritionGoals = new NutritionGoals(info);
         household.nutritionGoals = nutritionGoals.id;
-        await household.save();
-        await nutritionGoals.save();
-
-        console.log(household, nutritionGoals);
+        await Promise.all([household.save(), nutritionGoals.save()]);
 
         //Response
         return resp.status(201).json({
