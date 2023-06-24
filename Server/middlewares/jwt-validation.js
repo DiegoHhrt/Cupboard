@@ -1,30 +1,38 @@
 const jwt = require('jsonwebtoken');
+const { User } = require('../models');
 
 /**
  * @param {import('express').Request} req
  * @param {import('express').Response} resp
  * @param {import('express').NextFunction} next
  */
-const validateJWT = (req, resp, next) => {
+const validateJWT = async (req, resp, next) => {
     const token = req.header('x-token');
     if (!token) {
         return resp.status(401).json({
             ok: false,
-            msg: 'Token error',
+            msg: 'Token is missing in request',
         });
     }
     try {
         const { uid, userName } = jwt.verify(token, process.env.SECRET_JWT_SEED);
+        const authUser = await User.findById(uid);
+
+        if (!authUser) {
+            return resp.status(401).json({
+                msg: 'Token is not valid',
+            });
+        }
+
         req.uid = uid;
         req.userName = userName;
+        next();
     } catch (error) {
         return resp.status(401).json({
             ok: false,
             msg: 'Invalid token',
         });
     }
-
-    next();
 };
 
 module.exports = {
