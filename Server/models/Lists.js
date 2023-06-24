@@ -1,65 +1,76 @@
-const { Schema, model } = require("mongoose");
-const { ItemSchema } = require("./Item");
+const { Schema, model } = require('mongoose');
+const { ItemSchema, edibleSchema } = require('./Item');
 
-const inventorySchema = Schema({
+const inventorySchema = new Schema({
     ownerId: {
         type: Schema.Types.ObjectId,
-        refPath: "ownedBy",
-        required: true
+        refPath: 'ownedBy',
+        required: true,
     },
     ownedBy: {
         type: String,
-        enum: ["Household", "User"],
-        required: true
+        enum: ['Household', 'User'],
+        required: true,
     },
-    items:{
+    items: {
         type: [ItemSchema],
-        default: []
+        default: [],
     },
-    history:{
+    edibles: {
+        type: [edibleSchema],
+        default: [],
+    },
+    history: {
         type: [ItemSchema],
-        default: []
-    }
+        default: [],
+    },
 });
 
-const shoppingListSchema = Schema({
+const shoppingListSchema = new Schema({
     ownerId: {
         type: Schema.Types.ObjectId,
-        refPath: "ownedBy",
-        required: true
+        refPath: 'ownedBy',
+        required: true,
     },
     ownedBy: {
         type: String,
-        enum: ["Household", "User"],
-        required: true
+        enum: ['Household', 'User'],
+        required: true,
     },
-    items:{
+    items: {
         type: [ItemSchema],
-        default: []
+        default: [],
+    },
+    edibles: {
+        type: [edibleSchema],
+        default: [],
     },
     totalCost: {
         type: Number,
         min: 0,
-        default: 0
-    }
+        default: 0,
+    },
 });
 
-const wishlistSchema = Schema({
+const wishlistSchema = new Schema({
     ownerId: {
         type: Schema.Types.ObjectId,
-        refPath: "User",
-        required: true
+        refPath: 'User',
+        required: true,
     },
-    items:{
+    items: {
         type: [ItemSchema],
-        default: []
-    }
+        default: [],
+    },
+    edibles: {
+        type: [edibleSchema],
+        default: [],
+    },
 });
 
-
-const Inventory = model("Inventory", inventorySchema);
-const ShoppingList = model("ShoppingList", shoppingListSchema);
-const Wishlist = model("Wishlist", wishlistSchema);
+const Inventory = model('Inventory', inventorySchema);
+const ShoppingList = model('ShoppingList', shoppingListSchema);
+const Wishlist = model('Wishlist', wishlistSchema);
 
 module.exports = {
     Inventory,

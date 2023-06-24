@@ -1,75 +1,82 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
-const HouseholdSchema = Schema({
+const HouseholdSchema = new Schema({
     name: {
         type: String,
-        required: true
+        required: true,
     },
-    members: [{
-        type: Schema.Types.ObjectId,
-        ref: "User"
-    }],
-    admins: [{
-        type: Schema.Types.ObjectId,
-        ref: "User"
-    }],
+    members: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+        },
+    ],
+    admins: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+        },
+    ],
     shoppingList: {
         type: Schema.Types.ObjectId,
-        ref: "ShoppingList"
+        ref: 'ShoppingList',
     },
     inventory: {
         type: Schema.Types.ObjectId,
-        ref: "Inventory"
+        ref: 'Inventory',
     },
-    plannedFoods: [{
-        type: Schema.Types.ObjectId,
-        ref: "PlannedFood"
-    }],
+    plannedFoods: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'PlannedFood',
+        },
+    ],
     nutritionGoals: {
         type: Schema.Types.ObjectId,
-        ref: "NutritionGoals"
+        ref: 'NutritionGoals',
     },
     lowLevel: {
         type: Number,
         default: 40,
         min: 0,
-        max: 100
+        max: 100,
     },
     currency: {
         type: String,
-        default: "USD"
+        default: 'USD',
     },
     budget: {
         type: Number,
-        default: 0
-    }
+        default: 0,
+    },
 });
 
-plannedFoodSchema = Schema({
+plannedFoodSchema = new Schema({
     name: {
-        type: String
+        type: String,
     },
-    ingredients: [{
-        type: Schema.Types.ObjectId,
-        ref: "Item"
-    }],
+    ingredients: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Item',
+        },
+    ],
     recipeLink: {
-        type: String    
+        type: String,
     },
     plannedDate: {
-        type: Date
+        type: Date,
     },
     nutritionProperties: {
         type: Schema.Types.ObjectId,
-        ref: "NutritionProperties"
-    }
+        ref: 'NutritionProperties',
+    },
 });
 
-
-const Household = model("Household", HouseholdSchema);
-const PlannedFood = model("PlannedFood", plannedFoodSchema);
+const Household = model('Household', HouseholdSchema);
+const PlannedFood = model('PlannedFood', plannedFoodSchema);
 
 module.exports = {
     Household,
-    PlannedFood
+    PlannedFood,
 };

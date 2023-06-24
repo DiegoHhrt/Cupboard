@@ -1,9 +1,9 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
-const UserSchema = Schema({
+const UserSchema = new Schema({
     name: {
         type: String,
-        required: true
+        required: true,
     },
     userName: {
         type: String,
@@ -13,32 +13,32 @@ const UserSchema = Schema({
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     password: {
         type: String,
-        required: true
+        required: true,
     },
     household: {
         type: Schema.Types.ObjectId,
-        ref: "Household"
+        ref: 'Household',
     },
     shoppingList: {
         type: Schema.Types.ObjectId,
-        ref: "ShoppingList"
+        ref: 'ShoppingList',
     },
     inventory: {
         type: Schema.Types.ObjectId,
-        ref: "Inventory"
+        ref: 'Inventory',
     },
     wishList: {
         type: Schema.Types.ObjectId,
-        ref: "WishList"
+        ref: 'WishList',
     },
     budget: {
         type: Number,
-        default: 0
-    }
+        default: 0,
+    },
 });
 
 module.exports = model('User', UserSchema);

@@ -97,7 +97,8 @@ const createListItem = async(req = request, resp = response) => {
             }
             //Adds cost of the item to the total cost of the list if it's added to the shopping list
             if(listType === 'SL'){
-                list?.totalCost += item.cost;
+                if(!item.cost) item.cost = 0;
+                list.totalCost += item.cost;
             }
             await list.save();
             
@@ -123,6 +124,10 @@ const createListItem = async(req = request, resp = response) => {
         });
     }
 };
+
+const createListEdibleItem = async(req = request, resp = response) => {
+
+}
 
 const createRecipeItem = async(req = request, resp = response) => {
     const {listId} = req.body;
@@ -156,6 +161,11 @@ const updateItem = async(req = request, resp = response) => {
         }
         //Updates the item
         item[field] = value;
+        //Updates item in history if it was updated in the inventory
+        if(isInListType === 'I'){
+            const historyItem = list.history.find(historyItem => historyItem.id === itemId);
+            historyItem[field] = value;
+        }
         //Updates the total cost of the shopping list if the item cost is updated
         if(isInListType === 'SL' && field === 'cost'){
             list.totalCost -= item.cost;
@@ -248,5 +258,6 @@ module.exports={
     createRecipeItem,
     updateItem,
     getItem,
-    deleteItem
+    deleteItem,
+    createListEdibleItem
 };

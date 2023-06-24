@@ -1,71 +1,72 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
 function arrayMin(array) {
     return array.length > 0;
-};
+}
 
-const ItemSchema = Schema({
+const ItemSchema = new Schema({
     name: {
         type: String,
-        required: true
+        required: true,
     },
     edible: {
         type: Boolean,
-        required: true
+        required: true,
     },
     category: {
         type: [String],
         validate: [arrayMin, '{PATH} must have at least 1 value'],
     },
     purchaseDate: {
-        type: Date
+        type: Date,
     },
     currentAmmount: {
         type: Number,
-        min: -1
+        min: -1,
     },
     boughtAmmount: {
         type: Number,
-        min: 0
+        min: 0,
     },
     unit: {
         type: String,
-        required: true
+        required: true,
     },
     lowLevel: {
         type: Number,
         default: 40,
         min: 0,
-        max: 100
+        max: 100,
     },
-    cost:{
+    cost: {
         type: Number,
-        min: 0
+        min: 0,
     },
     imgUrl: {
-        type: String
-    }
+        type: String,
+    },
 });
 
-const edibleSchema = Schema({
+const edibleSchema = new Schema({
     item: {
         type: Schema.Types.ObjectId,
-        ref: "Item"
+        ref: 'Item',
     },
     finishBy: {
-        type: Date
+        type: Date,
     },
     nutritionProperties: {
         type: Schema.Types.ObjectId,
-        ref: "NutritionProperties"
-    }
+        ref: 'NutritionProperties',
+    },
 });
 
-const Item = model("Item", ItemSchema);
-const Edible = model("Edible", edibleSchema);
+const Item = model('Item', ItemSchema);
+const Edible = model('Edible', edibleSchema);
 
 module.exports = {
     Edible,
     Item,
-    ItemSchema
+    ItemSchema,
+    edibleSchema,
 };

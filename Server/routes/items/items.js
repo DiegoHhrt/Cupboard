@@ -6,18 +6,20 @@ const {
     createRecipeItem,
     updateItem,
     getItem,
-    deleteItem
+    deleteItem,
+    createListEdibleItem
 } = require('../../controllers/items/items');
+const { jsonValidation } = require('../../middlewares/validateJson');
 
 const router = Router();
 
-//Creates a new item in a list
-router.post('/create-item', [
+//Creates a new non edible item in a list
+router.post('/create-ne-item', [
     check('listId', 'List ID is required').isMongoId(),
     check('requestorId', 'Requestor ID is required').isMongoId(),
     check('listType', 'List type is required').isIn(['SL', 'W', 'I']),
     check('name', 'Name is required').not().isEmpty(),
-    check('edible', 'Is necessary to specify if the item is edible or not').isBoolean(),
+    check('edible', 'Please use the correct endpoint to save edibles').isBoolean().equals('false'),
     check('category', 'Is necessary to specify category/ies for the item').isArray().isLength({ min: 1 }),
     check('purchaseDate', 'Insert a valid purchase date').optional().isDate(),
     check('currentAmmount', 'Insert a valid current ammount').optional().isNumeric(),
@@ -28,6 +30,25 @@ router.post('/create-item', [
     check('imgUrl', 'Insert a valid image URL').optional().isURL(),
     fieldValidation
 ], createListItem);
+
+//Creates a new edible item in a list
+router.post('/create-e-item', [
+    check('listId', 'List ID is required').isMongoId(),
+    check('requestorId', 'Requestor ID is required').isMongoId(),
+    check('listType', 'List type is required').isIn(['SL', 'W', 'I']),
+    check('name', 'Name is required').not().isEmpty(),
+    check('edible', 'Please use the correct endpoint to save non edibles').isBoolean().equals(true),
+    check('category', 'Is necessary to specify category/ies for the item').isArray().isLength({ min: 1 }),
+    check('purchaseDate', 'Insert a valid purchase date').optional().isDate(),
+    check('currentAmmount', 'Insert a valid current ammount').optional().isNumeric(),
+    check('boughtAmmount', 'Insert a valid bought ammount').optional().isNumeric(),
+    check('unit', 'Insert a valid unit').not().isEmpty(),
+    check('lowLevel', 'Insert a valid low level').optional().isNumeric({ min: 0, max: 100 }),
+    check('cost', 'Insert a valid cost').optional().isNumeric({ min: 0 }),
+    check('imgUrl', 'Insert a valid image URL').optional().isURL(),
+    jsonValidation,
+    fieldValidation
+], createListEdibleItem);
 
 //Creates an item in a recipe
 router.post('/create-r-item', [

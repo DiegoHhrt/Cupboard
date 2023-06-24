@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { dbConnect } = require('../database/config');
+const { dbConnection } = require('../database/config');
 
 class Server {
     constructor() {
@@ -41,25 +41,31 @@ class Server {
 
     routes() {
         //authentication
-        app.use(this.authPath, require('../routes/auth/auth'));
+        this.app.use(this.authPath, require('../routes/auth/auth'));
         //get information
-        app.use(this.getItemsPath, require('../routes/getinfo/getListItems'));
-        app.use(
+        this.app.use(
+            this.getItemsPath,
+            require('../routes/getinfo/getListItems')
+        );
+        this.app.use(
             this.getHouseholdInfoPath,
             require('../routes/getinfo/getHouseholdInfo')
         );
-        app.use(this.getUserInfoPath, require('../routes/getinfo/getUserInfo'));
+        this.app.use(
+            this.getUserInfoPath,
+            require('../routes/getinfo/getUserInfo')
+        );
         //update information
-        app.use(
+        this.app.use(
             this.updateHouseholdInfoPath,
             require('../routes/update/updateHouseholdInfo')
         );
-        app.use(
+        this.app.use(
             this.updateUserinfoPath,
             require('../routes/update/updateUserInfo')
         );
         //manipulate items
-        app.use(this.itemsPath, require('../routes/items/items'));
+        this.app.use(this.itemsPath, require('../routes/items/items'));
     }
 
     listen() {
