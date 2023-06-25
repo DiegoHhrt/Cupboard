@@ -17,37 +17,8 @@ const getUser = async (req, resp) => {
  * @param {import('express').Request} req
  * @param {import('express').Response} resp
  */
-const getUserInventory = async (req, resp) => {
-    try {
-    } catch (error) {
-        console.log(error);
-        return resp.status(500).json({
-            ok: false,
-            msg: 'Please contact admin',
-        });
-    }
-};
-
-/**
- * @param {import('express').Request} req
- * @param {import('express').Response} resp
- */
-const getUShoppingList = async (req, resp) => {
-    try {
-    } catch (error) {
-        console.log(error);
-        return resp.status(500).json({
-            ok: false,
-            msg: 'Please contact admin',
-        });
-    }
-};
-
-/**
- * @param {import('express').Request} req
- * @param {import('express').Response} resp
- */
-const getUWishlist = async (req, resp) => {
+const getUserList = async (req, resp) => {
+    const { listType } = req.params;
     try {
     } catch (error) {
         console.log(error);
@@ -136,9 +107,7 @@ const editUserHousehold = async (req, resp) => {
 module.exports = {
     editUserHousehold,
     getUser,
-    getUserInventory,
-    getUShoppingList,
-    getUWishlist,
+    getUserList,
     updateUser,
     updateUserInventory,
     updateUShoppingList,

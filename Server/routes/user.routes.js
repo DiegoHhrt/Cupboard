@@ -2,9 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 const {
     getUser,
-    getUserInventory,
-    getUShoppingList,
-    getUWishlist,
+    getUserList,
     editUserHousehold,
     updateUser,
     updateUserInventory,
@@ -22,14 +20,17 @@ router.get(
 );
 
 //TODO: simplify by using params in a single request
-//Gets an user's inventory
-router.get('/u-inventory', [], getUserInventory);
 
-//Gets an user's shopping list
-router.get('/u-shoppinglist', [], getUShoppingList);
+router.get('/user/:listType', [], getUserList);
 
-//Gets an user's wishlist
-router.get('/u-wishlist', [], getUWishlist);
+// //Gets an user's inventory
+// router.get('/u-inventory', [], getUserInventory);
+
+// //Gets an user's shopping list
+// router.get('/u-shoppinglist', [], getUShoppingList);
+
+// //Gets an user's wishlist
+// router.get('/u-wishlist', [], getUWishlist);
 
 //Join user to household or remove user from household
 router.post(
