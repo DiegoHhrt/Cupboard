@@ -14,14 +14,14 @@ const {
  * @param {import('express').Response} resp
  */
 const newUser = async (req, resp) => {
-    const { userName, password } = req.body;
+    const { household, shoppingList, inventory, wishList, ...body } = req.body;
 
     try {
         //Create user with model
-        const dbUser = new User(req.body);
+        const dbUser = new User(body);
         //Password hash
         const salt = bcrypt.genSaltSync();
-        dbUser.password = bcrypt.hashSync(password, salt);
+        dbUser.password = bcrypt.hashSync(body.password, salt);
         //shopping list object creation on document
         const shoppingList = new ShoppingList({ ownerId: dbUser.id, ownedBy: 'User' });
         dbUser.shoppingList = shoppingList.id;
@@ -32,7 +32,7 @@ const newUser = async (req, resp) => {
         const wishList = new Wishlist({ ownerId: dbUser.id, ownedBy: 'User' });
         dbUser.wishList = wishList.id;
         //Json webToken generation
-        const token = await newJWt(dbUser.id, userName);
+        const token = await newJWt(dbUser.id, dbUser.userName);
         //Create user and auxiliary documents on db
         await Promise.all([
             dbUser.save(),
@@ -94,15 +94,14 @@ const userLogin = async (req, resp) => {
  * @param {import('express').Response} resp
  */
 const createHousehold = async (req, resp) => {
-    const { requestorId, ...data } = req.body;
+    const { admins, members, shoppingList, inventory, ...data } = req.body;
+    const user = req.authUser;
     const info = {
         ...data,
-        admins: [requestorId],
-        members: [requestorId],
+        admins: [user.id],
+        members: [user.id],
     };
     try {
-        const user = await User.findById(requestorId);
-
         //Create household and auxiliary objects with model
         const household = new Household(info);
         const shoppingList = new ShoppingList({
@@ -129,8 +128,8 @@ const createHousehold = async (req, resp) => {
         //Response
         return resp.status(201).json({
             ok: true,
-            household: household.id,
-            user: user.id,
+            household: household.name,
+            user: user.userName,
         });
     } catch (error) {
         console.log(error);
@@ -149,7 +148,6 @@ const createNutritionGoals = async (req, resp) => {
     const { householdId, requestorId } = req.body;
     const { animalProductBalance, vegetalProductBalance, ...info } = req.body;
     try {
-        //Verifies if household exists
         const household = await Household.findById(householdId);
         //Verifies if user is a household admin
         if (!household.admins.includes(requestorId)) {
@@ -167,8 +165,8 @@ const createNutritionGoals = async (req, resp) => {
         //Response
         return resp.status(201).json({
             ok: true,
-            nutritionGoals: nutritionGoals.id,
-            household: household.id,
+            nutritionGoals,
+            household,
         });
     } catch (error) {
         console.log(error);

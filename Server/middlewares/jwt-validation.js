@@ -15,7 +15,7 @@ const validateJWT = async (req, resp, next) => {
         });
     }
     try {
-        const { uid, userName } = jwt.verify(token, process.env.SECRET_JWT_SEED);
+        const { uid } = jwt.verify(token, process.env.SECRET_JWT_SEED);
         const authUser = await User.findById(uid);
 
         if (!authUser) {
@@ -24,8 +24,8 @@ const validateJWT = async (req, resp, next) => {
             });
         }
 
-        req.uid = uid;
-        req.userName = userName;
+        req.authUser = authUser;
+        req.body.requestorId = authUser.id;
         next();
     } catch (error) {
         return resp.status(401).json({
