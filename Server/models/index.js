@@ -3,6 +3,7 @@ const Item = require('./Item');
 const List = require('./Lists');
 const Nutrition = require('./Nutrition');
 const User = require('./User');
+const Category = require('./Category');
 
 module.exports = {
     ...Household,
@@ -10,4 +11,5 @@ module.exports = {
     ...List,
     ...Nutrition,
     User,
+    Category,
 };

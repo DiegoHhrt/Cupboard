@@ -13,10 +13,14 @@ const ItemSchema = new Schema({
         type: Boolean,
         required: true,
     },
-    category: {
-        type: [String],
-        validate: [arrayMin, '{PATH} must have at least 1 value'],
-    },
+    category: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Category',
+            required: true,
+            validate: [arrayMin, 'At least one category is required'],
+        },
+    ],
     purchaseDate: {
         type: Date,
     },
@@ -45,6 +49,10 @@ const ItemSchema = new Schema({
     imgUrl: {
         type: String,
     },
+    status: {
+        type: Boolean,
+        default: true,
+    },
 });
 
 const edibleSchema = new Schema({
@@ -60,6 +68,18 @@ const edibleSchema = new Schema({
         ref: 'NutritionProperties',
     },
 });
+
+ItemSchema.methods.toJSON = function () {
+    const { __v, _id, ...item } = this.toObject();
+    item.uid = _id;
+    return item;
+};
+
+edibleSchema.methods.toJSON = function () {
+    const { __v, _id, ...edible } = this.toObject();
+    edible.uid = _id;
+    return edible;
+};
 
 const Item = model('Item', ItemSchema);
 const Edible = model('Edible', edibleSchema);

@@ -140,6 +140,17 @@ const nutritionPropertiesSchema = Schema({
     },
 });
 
+nutritionGoalsSchema.methods.toJSON = function () {
+    const { __v, _id, ...nGoals } = this.toObject();
+    nGoals.uid = _id;
+    return nGoals;
+};
+nutritionPropertiesSchema.methods.toJSON = function () {
+    const { __v, _id, ...nProperties } = this.toObject();
+    nProperties.uid = _id;
+    return nProperties;
+};
+
 const NutritionGoals = model('NutritionGoals', nutritionGoalsSchema);
 const NutritionProperties = model('NutritionProperties', nutritionPropertiesSchema);
 

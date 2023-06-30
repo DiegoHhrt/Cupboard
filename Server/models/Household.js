@@ -73,6 +73,18 @@ plannedFoodSchema = new Schema({
     },
 });
 
+HouseholdSchema.methods.toJSON = function () {
+    const { __v, _id, ...household } = this.toObject();
+    household.uid = _id;
+    return household;
+};
+
+plannedFoodSchema.methods.toJSON = function () {
+    const { __v, _id, ...pFood } = this.toObject();
+    pFood.uid = _id;
+    return pFood;
+};
+
 const Household = model('Household', HouseholdSchema);
 const PlannedFood = model('PlannedFood', plannedFoodSchema);
 

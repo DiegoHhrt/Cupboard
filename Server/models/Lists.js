@@ -55,7 +55,7 @@ const shoppingListSchema = new Schema({
 const wishlistSchema = new Schema({
     ownerId: {
         type: Schema.Types.ObjectId,
-        refPath: 'User',
+        ref: 'User',
         required: true,
     },
     items: {
@@ -67,6 +67,22 @@ const wishlistSchema = new Schema({
         default: [],
     },
 });
+
+inventorySchema.methods.toJSON = function () {
+    const { __v, _id, ...inventory } = this.toObject();
+    inventory.uid = _id;
+    return inventory;
+};
+shoppingListSchema.methods.toJSON = function () {
+    const { __v, _id, ...shoppingList } = this.toObject();
+    shoppingList.uid = _id;
+    return shoppingList;
+};
+wishlistSchema.methods.toJSON = function () {
+    const { __v, _id, ...wishList } = this.toObject();
+    wishList.uid = _id;
+    return wishList;
+};
 
 const Inventory = model('Inventory', inventorySchema);
 const ShoppingList = model('ShoppingList', shoppingListSchema);
