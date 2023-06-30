@@ -7,15 +7,8 @@ const {
     tokenRenew,
     userLogin,
 } = require('../controllers');
-const {
-    emailExists,
-    userExistsById,
-    userBelongsToHousehold,
-    householdExistsById,
-} = require('../helpers/db-validators');
+const { emailExists, userBelongsToHousehold, mailExp } = require('../helpers');
 const { validateJWT, fieldValidation, householdAdminValidation } = require('../middlewares');
-
-const mailExp = new RegExp(/^[( \w \. \-)]{4,20}@((g|hot)mail|outlook|live).com$/);
 
 const router = Router();
 //New user creation
