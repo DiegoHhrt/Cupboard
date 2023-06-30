@@ -1,23 +1,17 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 const { getUser, getUserList, updateUser, deleteUser } = require('../controllers');
-const {
-    fieldValidation,
-    validateJWT,
-    validateUserListType,
-    validateUserIsActive,
-} = require('../middlewares');
+const { fieldValidation, validateJWT, validateUserListType } = require('../middlewares');
 const { mailExp } = require('../helpers');
 const router = Router();
 
 //Gets an user's information
-router.get('/get-self', [validateJWT, validateUserIsActive, fieldValidation], getUser);
+router.get('/get-self', [validateJWT, fieldValidation], getUser);
 
 router.get(
     '/get-list/:listType',
     [
         validateJWT,
-        validateUserIsActive,
         validateUserListType,
         check('listType', 'Valid list type is required').isIn([
             'inventory',
@@ -34,7 +28,6 @@ router.put(
     '/update-self',
     [
         validateJWT,
-        validateUserIsActive,
         check('name', 'User name must be at least 4 characters')
             .optional()
             .isLength({ min: 4 }),
@@ -51,9 +44,5 @@ router.put(
     updateUser
 );
 
-router.delete(
-    '/delete-self',
-    [validateJWT, validateUserIsActive, fieldValidation],
-    deleteUser
-);
+router.delete('/delete-self', [validateJWT, fieldValidation], deleteUser);
 module.exports = router;

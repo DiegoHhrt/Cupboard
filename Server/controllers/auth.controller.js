@@ -66,10 +66,10 @@ const userLogin = async (req, resp) => {
         //Confirm matching password
         const validPassword = bcrypt.compareSync(password, dbUser.password);
 
-        if (!validPassword) {
+        if (!validPassword || !dbUser.status) {
             return resp.status(400).json({
                 ok: false,
-                msg: 'Mail and password do not match',
+                msg: 'Mail and password do not match to existing user',
             });
         }
         //new jwt

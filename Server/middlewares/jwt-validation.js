@@ -18,7 +18,7 @@ const validateJWT = async (req, resp, next) => {
         const { uid } = jwt.verify(token, process.env.SECRET_JWT_SEED);
         const authUser = await User.findById(uid);
 
-        if (!authUser) {
+        if (!authUser || !authUser.status) {
             return resp.status(401).json({
                 msg: 'Token is not valid',
             });

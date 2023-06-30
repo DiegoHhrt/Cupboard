@@ -106,27 +106,4 @@ const validateUserListType = async (req, resp, next) => {
     }
 };
 
-/**
- * @param {import('express').Request} req
- * @param {import('express').Response} resp
- * @param {import('express').NextFunction} next
- */
-const validateUserIsActive = (req, resp, next) => {
-    try {
-        if (!req.authUser.status) {
-            return resp.status(403).json({
-                ok: false,
-                msg: 'User is not active',
-            });
-        }
-        next();
-    } catch (error) {
-        console.log(error);
-        return resp.status(500).json({
-            ok: false,
-            msg: 'Please contact admin',
-        });
-    }
-};
-
-module.exports = { householdAdminValidation, validateUserListType, validateUserIsActive };
+module.exports = { householdAdminValidation, validateUserListType };
