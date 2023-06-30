@@ -15,7 +15,7 @@ class Server {
             authPath: '/api/auth',
             HouseholdPath: '/api/household',
             ListItemsPath: '/api/list-items',
-            UserPath: '/api/user',
+            UserPath: '/api/users',
         };
 
         //Middlewares
