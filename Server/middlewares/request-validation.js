@@ -65,6 +65,7 @@ const validateUserListType = async (req, resp, next) => {
     try {
         let list;
         //Get list according to list type
+        //TODO: Populate correctly items and history
         if (listType === 'inventory') {
             list = await Inventory.findOne({ ownerId: user.id })
                 .populate('ownerId', 'name')
@@ -93,7 +94,7 @@ const validateUserListType = async (req, resp, next) => {
                 msg: `User is not correctly linked to the ${listType}. Please contact admin`,
             });
         }
-
+        list.listType = listType;
         req.list = list;
 
         next();
@@ -106,4 +107,64 @@ const validateUserListType = async (req, resp, next) => {
     }
 };
 
-module.exports = { householdAdminValidation, validateUserListType };
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} resp
+ * @param {import('express').NextFunction} next
+ */
+const validateHouseholdListType = async (req, resp, next) => {
+    const { limit = 10, from = 0 } = req.query;
+    const lim = isNaN(Number(limit)) ? 10 : limit;
+    const skip = isNaN(Number(from)) ? 0 : from;
+    const { listType } = req.params;
+    const { household: householdId } = req.authUser;
+    try {
+        let list;
+        //Get list according to list type
+        //TODO: Populate correctly items and history
+        if (listType === 'inventory') {
+            list = await Inventory.findOne({ ownerId: householdId })
+                .populate('ownerId', 'name')
+                .populate('items', 'name')
+                .populate('history', 'name');
+            //Trim history items to the limit and skip the first items
+            if (list) list.history = list.history.slice(skip, skip + lim);
+        } else if (listType === 'shopping-list') {
+            list = await ShoppingList.findOne({ ownerId: householdId })
+                .populate('ownerId', 'name')
+                .populate('items', 'name');
+        } else if (listType === 'planned-foods') {
+            list = await Household.findById(householdId);
+            list = list.plannedFoods;
+        } else {
+            return resp.status(400).json({
+                ok: false,
+                msg: 'Invalid list type',
+            });
+        }
+
+        if (!list) {
+            return resp.status(500).json({
+                ok: false,
+                msg: `User is not correctly linked to the ${listType}. Please contact admin`,
+            });
+        }
+
+        list.listType = listType;
+        req.list = list;
+
+        next();
+    } catch (error) {
+        console.log(error);
+        return resp.status(500).json({
+            ok: false,
+            msg: 'Please contact admin',
+        });
+    }
+};
+
+module.exports = {
+    householdAdminValidation,
+    validateUserListType,
+    validateHouseholdListType,
+};
