@@ -27,6 +27,7 @@ const getUser = async (req, resp) => {
  * @param {import('express').Response} resp
  */
 const getUserList = async (req, resp) => {
+    const { listType } = req.params;
     const { limit = 10, from = 0 } = req.query;
     const lim = isNaN(Number(limit)) ? 10 : limit;
     const skip = isNaN(Number(from)) ? 0 : from;
@@ -37,6 +38,7 @@ const getUserList = async (req, resp) => {
 
         resp.json({
             ok: true,
+            listType,
             list,
         });
     } catch (error) {
@@ -53,14 +55,14 @@ const getUserList = async (req, resp) => {
  * @param {import('express').Response} resp
  */
 const updateUser = async (req, resp) => {
-    const user = req.authUser;
+    const { id } = req.authUser;
     const { _id, household, shoppingList, inventory, wishList, status, ...body } = req.body;
     try {
         if (body.password) {
             const salt = bcrypt.genSaltSync();
             body.password = bcrypt.hashSync(body.password, salt);
         }
-        const dbUser = await User.findByIdAndUpdate(user.id, body, { new: true });
+        const dbUser = await User.findByIdAndUpdate(id, body, { new: true });
 
         resp.status(200).json({
             ok: true,
@@ -80,9 +82,11 @@ const updateUser = async (req, resp) => {
  * @param {import('express').Response} resp
  */
 const deleteUser = async (req, resp) => {
-    const user = req.authUser;
+    // TODO: Delete all user lists and items
+    // TODO: remove user from household admin list and replace with another admin if possible
+    const { id } = req.authUser;
     try {
-        const dbUser = await User.findByIdAndUpdate(user.id, { status: false });
+        const dbUser = await User.findByIdAndUpdate(id, { status: false });
 
         resp.status(200).json({
             ok: true,
