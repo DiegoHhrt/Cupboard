@@ -22,6 +22,8 @@ class Server {
         this.middlewares();
         //App routes
         this.routes();
+
+        //TODO: add a ticket raising system (Maybe using sockets) for home tasks
     }
 
     async dbConnect() {
