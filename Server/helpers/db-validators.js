@@ -29,11 +29,12 @@ const emailExists = async (email) => {
  */
 const userExistsById = async (id) => {
     const userExists = await User.findById(id);
-    if (!userExists) {
+    if (!userExists || !userExists.status) {
         throw new Error(`Id: ${id} doesn't exist`);
     }
 };
 
+// TODO: Migrate function to middlewares\request-validation.js
 /**
  *
  * @param {String} id
@@ -41,9 +42,10 @@ const userExistsById = async (id) => {
 const userBelongsToHousehold = async (id) => {
     const user = await User.findById(id);
     const household = await Household.findOne({ members: id });
-    if (!user.household || !household) {
+    if (!user?.household || !household) {
         throw new Error(`User: ${id} doesn't belong to a household`);
     }
+    return true;
 };
 //TODO: find real use xd
 /**
