@@ -145,7 +145,8 @@ const createHousehold = async (req, resp) => {
  * @param {import('express').Response} resp
  */
 const createNutritionGoals = async (req, resp) => {
-    const { householdId, requestorId } = req.body;
+    const { requestorId } = req.body;
+    const { household: householdId } = req.authUser;
     const { animalProductBalance, vegetalProductBalance, ...info } = req.body;
     try {
         const household = await Household.findById(householdId);
@@ -156,6 +157,7 @@ const createNutritionGoals = async (req, resp) => {
                 msg: 'User is not an admin of the household',
             });
         }
+        info.householdId = householdId;
 
         //Create nutrition goals and assigns to household
         const nutritionGoals = new NutritionGoals(info);
