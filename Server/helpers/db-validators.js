@@ -70,7 +70,7 @@ const householdExistsById = async (id) => {
     }
 };
 
-//TODO: refactor to fit project
+//TODO: refactor to fit project (Deal with arrays) and prompt user to create a category if it doesn't exist
 /**
  *
  * @param {String} id
@@ -96,9 +96,9 @@ const categoryExistsByName = async (name = '') => {
  *
  * @param {String} id
  */
-const productExists = async (id) => {
-    const productExists = await Product.findById(id);
-    if (!productExists) {
+const itemExists = async (id, list) => {
+    const itemExists = list.find((item) => item._id == id);
+    if (!itemExists) {
         throw new Error(`Id: ${id} doesn't exist`);
     }
 };
@@ -109,7 +109,7 @@ module.exports = {
     emailExists,
     householdExistsById,
     isHouseholdAdmin,
-    productExists,
+    itemExists,
     roleIsValid,
     userBelongsToHousehold,
     userExistsById,

@@ -66,6 +66,7 @@ const validateUserListType = async (req, resp, next) => {
         let list;
         //Get list according to list type
         //TODO: Populate correctly items and history
+        //TODO: validate history request
         if (listType === 'inventory') {
             list = await Inventory.findOne({ ownerId: user.id })
                 .populate('ownerId', 'name')
@@ -94,7 +95,6 @@ const validateUserListType = async (req, resp, next) => {
                 msg: `User is not correctly linked to the ${listType}. Please contact admin`,
             });
         }
-        list.listType = listType;
         req.list = list;
 
         next();
@@ -122,6 +122,7 @@ const validateHouseholdListType = async (req, resp, next) => {
         let list;
         //Get list according to list type
         //TODO: Populate correctly items and history
+        //TODO: validate history request
         if (listType === 'inventory') {
             list = await Inventory.findOne({ ownerId: householdId })
                 .populate('ownerId', 'name')
@@ -150,8 +151,36 @@ const validateHouseholdListType = async (req, resp, next) => {
             });
         }
 
-        list.listType = listType;
         req.list = list;
+
+        next();
+    } catch (error) {
+        console.log(error);
+        return resp.status(500).json({
+            ok: false,
+            msg: 'Please contact admin',
+        });
+    }
+};
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} resp
+ * @param {import('express').NextFunction} next
+ */
+const validateItemExists = (req, resp, next) => {
+    try {
+        const list = req.list;
+        const { itemId } = req.params;
+        const item = list.items.find((item) => item._id.equals(itemId));
+        if (!item || !item.status) {
+            return resp.status(400).json({
+                ok: false,
+                msg: 'Item does not exist',
+            });
+        }
+
+        req.item = item;
 
         next();
     } catch (error) {
@@ -167,4 +196,5 @@ module.exports = {
     householdAdminValidation,
     validateUserListType,
     validateHouseholdListType,
+    validateItemExists,
 };
