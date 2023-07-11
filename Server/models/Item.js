@@ -9,10 +9,6 @@ const ItemSchema = new Schema({
         type: String,
         required: true,
     },
-    edible: {
-        type: Boolean,
-        required: true,
-    },
     category: [
         {
             type: Schema.Types.ObjectId,
@@ -56,6 +52,10 @@ const ItemSchema = new Schema({
 });
 
 const edibleSchema = new Schema({
+    edible: {
+        type: Boolean,
+        required: true,
+    },
     item: {
         type: Schema.Types.ObjectId,
         ref: 'Item',
