@@ -29,6 +29,7 @@ const ItemSchema = new Schema({
         min: 0,
     },
     unit: {
+        //TODO: Create an unit model and initialize it with the most common units
         type: String,
         required: true,
     },

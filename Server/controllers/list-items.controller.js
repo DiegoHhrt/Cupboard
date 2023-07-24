@@ -6,6 +6,7 @@ const { ShoppingList, Inventory, Wishlist, Household, Item, User } = require('..
  */
 const createListItem = async (req, resp) => {
     //TODO: Implement recycling of deleted items
+    //TODO: Implement category creation in db
     const { status, ...info } = req.body;
     const { listType } = req.params;
     const list = req.list;

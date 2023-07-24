@@ -32,6 +32,7 @@ const getUserList = async (req, resp) => {
     const lim = isNaN(Number(limit)) ? 10 : limit;
     const skip = isNaN(Number(from)) ? 0 : from;
     try {
+        //TODO: Validate not showing false status items
         const list = req.list;
         //Trim items to the limit and skip the first items
         list.items = list.items.slice(skip, skip + lim);
