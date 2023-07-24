@@ -1,7 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const { dbConnection } = require('../database/config');
-const { authRoutes, householdRoutes, listItemsRoutes, userRoutes } = require('../routes');
+const {
+    authRoutes,
+    householdRoutes,
+    listItemsRoutes,
+    userRoutes,
+    searchRoutes,
+} = require('../routes');
 
 class Server {
     constructor() {
@@ -16,6 +22,7 @@ class Server {
             HouseholdPath: '/api/household',
             ListItemsPath: '/api/list-items',
             UserPath: '/api/users',
+            SearchPath: '/api/search',
         };
 
         //Middlewares
@@ -50,6 +57,8 @@ class Server {
         this.app.use(this.paths.ListItemsPath, listItemsRoutes);
         //User
         this.app.use(this.paths.UserPath, userRoutes);
+        //Search
+        this.app.use(this.paths.SearchPath, searchRoutes);
     }
 
     listen() {
