@@ -1,26 +1,21 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
 const newJWt = (uid, userName) => {
+    const payload = { uid, userName };
 
-    const payload = {uid, userName};
-
-    return new Promise ((resolve, reject)=>{
-        jwt.sign(payload, process.env.SECRET_JWT_SEED, {
-            expiresIn: '24h'
-        }, (err, token) => {
-            if(err)
-            {
+    return new Promise((resolve, reject) => {
+        //TODO: Restore expiration time to something reasonable (use env variable?)
+        jwt.sign(payload, process.env.SECRET_JWT_SEED, { expiresIn: '7d' }, (err, token) => {
+            if (err) {
                 console.log(err);
                 reject(err);
-            }
-            else
-            {
+            } else {
                 resolve(token);
             }
-        })
-    })
-}
+        });
+    });
+};
 
 module.exports = {
-    newJWt
-}
+    newJWt,
+};
