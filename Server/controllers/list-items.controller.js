@@ -1,4 +1,4 @@
-const { ShoppingList, Inventory, Wishlist, Household, Item, User } = require('../models');
+const { Item } = require('../models');
 
 /**
  * @param {import('express').Request} req
@@ -52,7 +52,12 @@ const createListItem = async (req, resp) => {
  * @param {import('express').Request} req
  * @param {import('express').Response} resp
  */
-const createListEdibleItem = async (req, resp) => {};
+const createListEdibleItem = async (req, resp) => {
+    return resp.status(500).json({
+        ok: false,
+        msg: 'Not implemented',
+    });
+};
 
 /**
  * @param {import('express').Request} req

@@ -216,8 +216,8 @@ router.post(
             .equals(true),
         check('category', 'Is necessary to specify category/ies for the item')
             .isArray()
-            .isLength({ min: 1 })
-            .custom(categoryExists), //TODO: Transform category validation to deal with arrays
+            .isLength({ min: 1 }),
+        //.custom(categoryExists), //TODO: Transform category validation to deal with arrays
         check('purchaseDate', 'Insert a valid purchase date').optional().isDate(),
         check('currentAmmount', 'Insert a valid current ammount').optional().isNumeric(),
         check('boughtAmmount', 'Insert a valid bought ammount').optional().isNumeric(),
@@ -274,8 +274,8 @@ router.put(
         check('category', 'Is necessary to specify category/ies for the item')
             .optional()
             .isArray()
-            .isLength({ min: 1 })
-            .custom(categoryExists),
+            .isLength({ min: 1 }),
+        // .custom(categoryExists), TODO: Transform category validation to deal with arrays
         check('purchaseDate', 'Insert a valid purchase date').optional().isDate(),
         check('currentAmmount', 'Insert a valid current ammount').optional().isNumeric(),
         check('boughtAmmount', 'Insert a valid bought ammount').optional().isNumeric(),
