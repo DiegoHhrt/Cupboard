@@ -1,1 +1,28 @@
-<p>nav-menu works!</p>
+<!-- TODO: Improve button breakpoints -->
+<nav class="navbar sticky-top nav-bg">
+  <div class="container-fluid row">
+    <span class="navbar-brand title-text col-2 text-center">Cupboard</span>
+    <div class="col-7 col-md-5 col-sm-3">
+      <button
+        class="btn"
+        mat-flat-button
+        [routerLink]="[activeLink!.route]"
+        routerLinkActive="active-route"
+        style="width: 30%"
+      >
+        {{ activeLink!.name }}
+      </button>
+    </div>
+    <div *ngFor="let unActiveLink of unActiveLinks" class="col text-end">
+      <button
+        class="btn"
+        mat-flat-button
+        [routerLink]="[unActiveLink.route]"
+        routerLinkActive="active-route"
+        style="width: 80%"
+      >
+        {{ unActiveLink.name }}
+      </button>
+    </div>
+  </div>
+</nav>
