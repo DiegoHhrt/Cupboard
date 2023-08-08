@@ -1,0 +1,36 @@
+h1{
+  font-family: 'Advent Pro', sans-serif;
+}
+input{
+  font-family: 'Antic Slab', serif;
+  border: 3px solid #B3F3AC;
+  background-color: #222121;
+  border-radius: 15px;
+  box-shadow: 4px 3px 20px 0px #c1f8bb;
+  color: #B3F3AC;
+}
+input::placeholder{
+   color: rgba(179, 243, 172, 0.4);
+}
+input:focus{
+  outline: none;
+  border: 3px solid #8f7cbb;
+  box-shadow: 4px 3px 20px 0px #8f7cbb;
+  background-color: #222121;
+  color: #B3F3AC;
+}
+
+button{
+  font-family: 'Happy Monkey', cursive;
+  background-color: #CB997E;
+  color: #222121;
+}
+
+.go-to{
+  background-color: #B3F3AC;
+  color: #222121;
+}
+
+.error-text{
+  color: #ff9e9e;
+}
