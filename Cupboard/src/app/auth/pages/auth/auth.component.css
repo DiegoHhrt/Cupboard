@@ -3,34 +3,34 @@ h1{
 }
 input{
   font-family: 'Antic Slab', serif;
-  border: 3px solid #B3F3AC;
-  background-color: #222121;
+  border: 3px solid var(--semi-grass);
+  background-color: var(--bg-dark);
   border-radius: 15px;
   box-shadow: 4px 3px 20px 0px #c1f8bb;
-  color: #B3F3AC;
+  color: var(--semi-grass);
 }
 input::placeholder{
    color: rgba(179, 243, 172, 0.4);
 }
 input:focus{
   outline: none;
-  border: 3px solid #8f7cbb;
-  box-shadow: 4px 3px 20px 0px #8f7cbb;
-  background-color: #222121;
-  color: #B3F3AC;
+  border: 3px solid var(--purple-contrast);
+  box-shadow: 4px 3px 20px 0px var(--purple-contrast);
+  background-color: var(--bg-dark);
+  color: var(--semi-grass);
 }
 
 button{
   font-family: 'Happy Monkey', cursive;
-  background-color: #CB997E;
-  color: #222121;
+  background-color: var(--orange-dark);
+  color: var(--bg-dark);
 }
 
 .go-to{
-  background-color: #B3F3AC;
-  color: #222121;
+  background-color: var(--semi-grass);
+  color: var(--bg-dark);
 }
 
 .error-text{
-  color: #ff9e9e;
+  color: var(--error-red);
 }
