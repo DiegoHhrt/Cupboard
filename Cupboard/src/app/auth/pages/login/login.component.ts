@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { UserLoginData } from '../../interfaces';
 
 @Component({
   selector: 'auth-login',
@@ -8,16 +10,27 @@ import { Router } from '@angular/router';
   styleUrls: ['../auth/auth.component.css'],
 })
 export class LoginComponent {
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   LoginForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required]],
-    pw: ['', [Validators.required]],
+    email: ['test2@gmail.com', [Validators.required]],
+    password: ['1234567', [Validators.required]],
   });
 
   public login = () => {
-    console.log('Ligin');
-    this.router.navigateByUrl('/');
+    const loginData: UserLoginData = this.LoginForm.value;
+    this.authService.login(loginData).subscribe((resp) => {
+      if (resp.ok) this.router.navigateByUrl('/home');
+      else {
+        const { msg } = resp;
+        //TODO: show error message
+        console.log(msg);
+      }
+    });
   };
 
   public validInput = (campo: string) => {

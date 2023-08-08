@@ -1,5 +1,6 @@
 import { Jwt } from 'jsonwebtoken';
-import { User } from 'src/app/interfaces/user.interface';
+import { User } from 'src/app/interfaces';
+import { Errors } from './';
 
 export interface UserLoginData {
   email: string;
@@ -12,6 +13,8 @@ export interface UserLoginData {
 export interface UserLoginResp {
   ok: boolean;
   uid?: User['id'];
-  token?: Jwt;
+  // token?: Jwt;
+  token?: string;
   msg?: string;
+  errors?: Errors;
 }

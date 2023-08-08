@@ -1,5 +1,5 @@
 import { Jwt } from 'jsonwebtoken';
-import { User } from 'src/app/interfaces/user.interface';
+import { User } from 'src/app/interfaces';
 
 export interface TokenRenewResp {
   ok: boolean;
