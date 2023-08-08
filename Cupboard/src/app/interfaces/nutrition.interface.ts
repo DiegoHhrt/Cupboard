@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { Household } from './household.interface';
+import { Household } from './';
 
 export interface NutritionGoals {
   id: ObjectId;

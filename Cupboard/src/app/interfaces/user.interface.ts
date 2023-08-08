@@ -1,6 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { Household } from './household.interface';
-import { Inventory, ShoppingList, WishList } from './list.interface';
+import { Household, Inventory, ShoppingList, WishList } from './';
 
 export interface User {
   id: ObjectId;

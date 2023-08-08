@@ -1,8 +1,12 @@
 import { ObjectId } from 'mongodb';
-import { User } from './user.interface';
-import { Inventory, ShoppingList } from './list.interface';
-import { NutritionGoals, NutritionProperties } from './nutrition.interface';
-import { Item } from './item.interface';
+import {
+  Inventory,
+  Item,
+  NutritionGoals,
+  NutritionProperties,
+  ShoppingList,
+  User,
+} from './';
 
 export interface Household {
   id: ObjectId;

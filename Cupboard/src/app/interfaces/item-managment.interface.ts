@@ -1,4 +1,4 @@
-import { Item } from './item.interface';
+import { Item } from './';
 
 export interface ItemCreationData {
   name: string;
