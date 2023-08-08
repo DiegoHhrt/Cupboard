@@ -16,3 +16,7 @@
 
 html, body { height: 100%; background-color: var(--bg-dark); color: white;}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.title-text{
+  font-family: 'Advent Pro', sans-serif;
+}
