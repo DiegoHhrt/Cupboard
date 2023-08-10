@@ -7,13 +7,13 @@ import {
   UserSignUpData,
   UserSignUpResp,
 } from '../interfaces';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  // private baseUrl: string = environment.baseUrl;
-  private baseUrl: string = 'http://localhost:4000/api';
+  private baseUrl: string = environment.backendBaseUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -46,7 +46,7 @@ export class AuthService {
 
     return this.http.post<UserSignUpResp>(url, body).pipe(
       tap(({ ok, token }) => {
-        // if (ok) localStorage.setItem('token', token!);
+        if (ok) localStorage.setItem('token', token!);
       }),
       catchError(({ ok, error }) => of(this.handleError(ok, error)))
     );
