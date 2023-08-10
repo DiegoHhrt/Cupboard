@@ -1,5 +1,6 @@
 import { AfterContentInit, Component, Input, OnInit } from '@angular/core';
 import { Inventory, ShoppingList } from 'src/app/interfaces';
+import { HouseholdInfoService } from 'src/app/services/household-info.service';
 import { UserInfoService } from 'src/app/services/user-info.service';
 
 @Component({
@@ -13,7 +14,10 @@ export class ListDashboardComponent implements OnInit {
   public inventory!: Inventory;
   public shoppingList!: ShoppingList;
 
-  constructor(private userService: UserInfoService) {}
+  constructor(
+    private userService: UserInfoService,
+    private householdService: HouseholdInfoService
+  ) {}
 
   ngOnInit(): void {
     if (this.reachEndpoint === 'user') {
@@ -24,6 +28,17 @@ export class ListDashboardComponent implements OnInit {
         if (response.ok) this.shoppingList = response.list;
       });
     }
-    //TODO: Add household endpoint
+    if (this.reachEndpoint === 'household') {
+      this.householdService
+        .getHouseholdList('inventory')
+        .subscribe((response) => {
+          if (response.ok) this.inventory = response.list;
+        });
+      this.householdService
+        .getHouseholdList('shopping-list')
+        .subscribe((response) => {
+          if (response.ok) this.shoppingList = response.list;
+        });
+    }
   }
 }

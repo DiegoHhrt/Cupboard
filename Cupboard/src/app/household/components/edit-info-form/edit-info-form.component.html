@@ -1,0 +1,47 @@
+<form (ngSubmit)="updateInfo()" autocomplete="off" [formGroup]="UpdateForm">
+  <div class="row mt-3">
+    <!-- Name -->
+    <div class="col-4">
+      <input
+        matInput
+        formControlName="name"
+        type="text"
+        class="form-control"
+        placeholder="Name"
+      />
+    </div>
+    <div class="col-4">
+      <div class="row">
+        <div class="col-8">
+          <input
+            formControlName="budget"
+            type="number"
+            class="form-control"
+            placeholder="Budget"
+          />
+        </div>
+        <div class="col align-items-center">
+          <span>Currency</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3 justify-content-center"></div>
+  <!-- Submit button -->
+  <div class="row mb-4 mb-sm-3 mt-5 justify-content-center">
+    <div class="col-6 text-end">
+      <button mat-raised-button class="mx-2 form-btn-save mb-3 mt-3">
+        Save
+      </button>
+    </div>
+    <div class="col-6 text-start">
+      <button
+        (click)="exitEditMode()"
+        mat-raised-button
+        class="mx-2 form-btn-exit mb-3 mt-3"
+      >
+        Exit
+      </button>
+    </div>
+  </div>
+</form>

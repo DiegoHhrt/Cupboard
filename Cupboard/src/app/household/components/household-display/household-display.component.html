@@ -1,0 +1,20 @@
+<div class="col text-center mt-4 container">
+  <ng-container *ngIf="!editing; else edit">
+    <div class="row">
+      <h1>Household information</h1>
+    </div>
+    <household-info
+      [household]="household!"
+      (onToggleEditMode)="toggleEditMode($event)"
+    ></household-info>
+  </ng-container>
+  <ng-template #edit>
+    <div class="row">
+      <h1>Edit information</h1>
+    </div>
+    <household-edit-info-form
+      [household]="household!"
+      (onToggleEditMode)="toggleEditMode($event)"
+    ></household-edit-info-form>
+  </ng-template>
+</div>

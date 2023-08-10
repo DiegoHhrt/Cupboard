@@ -1,39 +1,61 @@
 <!-- TODO implement toggle edit -->
+<!-- TODO: Simplify and use only one ngTemplate -->
 <div class="row text-center mb-5 mt-4">
   <div class="col-6">
     <div class="row">
       <h3>Inventory</h3>
     </div>
-    <div class="row text-start" style="max-height: 500px; overflow-y: scroll">
-      <div class="col-6" *ngFor="let item of inventory!.items">
-        <shared-card [item]="item"></shared-card>
+    <ng-container *ngIf="inventory.items!.length > 0; else NoInvItems">
+      <div class="row text-start" style="max-height: 500px; overflow-y: scroll">
+        <div class="col-6" *ngFor="let item of inventory!.items">
+          <shared-card [item]="item"></shared-card>
+        </div>
       </div>
-    </div>
+    </ng-container>
+    <ng-template #NoInvItems>
+      <div class="text-center row">
+        <span>There's no items in your inventory yet...</span>
+      </div>
+    </ng-template>
   </div>
   <div class="col-6">
     <div class="row">
       <h3>Shopping List</h3>
     </div>
-    <div class="row">
-      <div class="col-6 text-end">
-        <span>Budget: </span>
+    <ng-container *ngIf="shoppingList.items!.length > 0; else NoSLItems">
+      <div class="row">
+        <div class="col-6 text-end">
+          <span>Budget: </span>
+        </div>
+        <div class="col-6 text-start">
+          <span>Cost: {{ shoppingList.totalCost | currency }}</span>
+        </div>
       </div>
-      <div class="col-6 text-start">
-        <span>Cost: {{ shoppingList.totalCost | currency }}</span>
+      <div class="row text-start" style="max-height: 500px; overflow-y: scroll">
+        <div class="col-6" *ngFor="let item of shoppingList!.items">
+          <shared-card [item]="item"></shared-card>
+        </div>
       </div>
-    </div>
-    <div class="row text-start" style="max-height: 500px; overflow-y: scroll">
-      <div class="col-6" *ngFor="let item of shoppingList!.items">
-        <shared-card [item]="item"></shared-card>
+    </ng-container>
+    <ng-template #NoSLItems>
+      <div class="text-center row">
+        <span>There's no items in your Shopping list yet...</span>
       </div>
-    </div>
+    </ng-template>
   </div>
 </div>
 <div class="row text-center">
   <h3>History</h3>
 </div>
-<div class="row text-start" style="max-height: 350px; overflow-y: scroll">
-  <div class="col-3" *ngFor="let item of inventory!.history">
-    <shared-card [item]="item"></shared-card>
+<ng-container *ngIf="inventory.history!.length > 0; else NoItems">
+  <div class="row text-start" style="max-height: 350px; overflow-y: scroll">
+    <div class="col-3" *ngFor="let item of inventory!.history">
+      <shared-card [item]="item"></shared-card>
+    </div>
   </div>
-</div>
+</ng-container>
+<ng-template #NoItems>
+  <div class="text-center row">
+    <span>There's no items in your history yet...</span>
+  </div>
+</ng-template>

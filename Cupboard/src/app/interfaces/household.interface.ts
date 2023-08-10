@@ -11,8 +11,8 @@ import {
 export interface Household {
   id: ObjectId;
   name?: string;
-  members?: User['id'][];
-  admins?: User['id'][];
+  members?: User['id'][] | { name: string };
+  admins?: User['id'][] | { name: string };
   shoppingList?: ShoppingList['id'];
   inventory?: Inventory['id'];
   plannedFoods?: PlannedFoods['id'][];
@@ -29,4 +29,10 @@ export interface PlannedFoods {
   recipeLink?: string;
   plannedDate?: Date;
   nutritionProperties?: NutritionProperties['id'];
+}
+
+export interface HouseholdInfoResponse {
+  ok: boolean;
+  household?: Household;
+  msg?: string;
 }

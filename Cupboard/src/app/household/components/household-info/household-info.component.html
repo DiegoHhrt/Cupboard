@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col">
+    <h2>Name:</h2>
+    <h3>{{ household!.name }}</h3>
+  </div>
+  <div class="col">
+    <h2>Member list:</h2>
+    <h3>{{ household!.members }}</h3>
+  </div>
+  <div class="col">
+    <h2>Admin list:</h2>
+    <h3>{{ household!.members }}</h3>
+  </div>
+</div>
+<div class="row align-items-center mb-4">
+  <div class="col text-end">
+    <button (click)="enterEditMode()" mat-icon-button>
+      <mat-icon>edit</mat-icon>
+    </button>
+  </div>
+</div>

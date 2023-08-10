@@ -1,0 +1,5 @@
+.container{
+  border: 5px solid var(--semi-grass);
+  border-radius: 10px;
+  padding-top: 15px;
+}
