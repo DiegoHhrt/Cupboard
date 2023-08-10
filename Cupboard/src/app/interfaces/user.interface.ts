@@ -14,3 +14,9 @@ export interface User {
   budget?: number;
   status?: boolean;
 }
+
+export interface UserInfoResponse {
+  ok: boolean;
+  user?: User;
+  msg?: string;
+}

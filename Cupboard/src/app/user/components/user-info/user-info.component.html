@@ -1,0 +1,57 @@
+<div class="row">
+  <div class="col" *ngIf="showName">
+    <h2>Name:</h2>
+    <h3>{{ user!.name }}</h3>
+  </div>
+  <div class="col" *ngIf="showUserName">
+    <h2>Username:</h2>
+    <h3>{{ user!.userName }}</h3>
+  </div>
+  <div class="col" *ngIf="showEmail">
+    <h2>Email:</h2>
+    <h3>{{ user!.email }}</h3>
+  </div>
+  <div class="col">
+    <h2>Household Name:</h2>
+    <h3>{{ user!.name }}</h3>
+  </div>
+</div>
+<div class="row align-items-center mb-4">
+  <div class="col-8">
+    <div class="row align-items-center text-start mx-2 mt-2">
+      <div class="col-4">
+        <mat-slide-toggle (change)="toggleProp('name')" [checked]="showName"
+          >Show Name</mat-slide-toggle
+        >
+      </div>
+      <div class="col-4">
+        <mat-slide-toggle
+          (change)="toggleProp('username')"
+          [checked]="showUserName"
+          >Show Username</mat-slide-toggle
+        >
+      </div>
+    </div>
+    <div class="row align-items-center text-start mx-2 mt-2">
+      <div class="col-4">
+        <mat-slide-toggle (change)="toggleProp('email')" [checked]="showEmail"
+          >Show Email</mat-slide-toggle
+        >
+      </div>
+      <div class="col">
+        <mat-slide-toggle
+          (change)="toggleShowHouseholdOnMenu(!showHouseholdOnMenu)"
+          [checked]="showHouseholdOnMenu"
+        >
+          Show household name on menu bar
+        </mat-slide-toggle>
+      </div>
+    </div>
+  </div>
+
+  <div class="col text-end">
+    <button (click)="enterEditMode()" mat-icon-button>
+      <mat-icon>edit</mat-icon>
+    </button>
+  </div>
+</div>
