@@ -8,8 +8,18 @@ import { MaterialModule } from '../material/material.module';
 import { CardComponent } from './components/card/card.component';
 
 @NgModule({
-  declarations: [NavMenuComponent, SearchComponent, ListDashboardComponent, CardComponent],
+  declarations: [
+    NavMenuComponent,
+    SearchComponent,
+    ListDashboardComponent,
+    CardComponent,
+  ],
   imports: [CommonModule, RouterModule, MaterialModule],
-  exports: [NavMenuComponent, SearchComponent, ListDashboardComponent],
+  exports: [
+    NavMenuComponent,
+    SearchComponent,
+    ListDashboardComponent,
+    CardComponent,
+  ],
 })
 export class SharedModule {}

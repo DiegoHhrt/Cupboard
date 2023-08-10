@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { UserInfoService } from '../../../services/user-info.service';
-import { Inventory, ShoppingList, User } from 'src/app/interfaces';
+import { Inventory, ShoppingList, User, WishList } from 'src/app/interfaces';
 import { switchMap } from 'rxjs';
 
 @Component({
@@ -12,6 +12,7 @@ export class MainPageComponent implements OnInit {
   public showHouseholdOnMenu: false | string = false;
 
   public user?: User;
+  public wishlist!: WishList;
 
   constructor(private userService: UserInfoService) {}
 
@@ -20,7 +21,9 @@ export class MainPageComponent implements OnInit {
       if (response.ok) this.user = response.user;
     });
 
-    this.userService.getUserList('wishlist');
+    this.userService.getUserList('wishlist').subscribe((response) => {
+      if (response.ok) this.wishlist = response.list;
+    });
   }
 
   public setShowHousehold(show: boolean): void {

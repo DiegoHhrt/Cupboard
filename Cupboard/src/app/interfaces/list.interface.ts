@@ -26,7 +26,8 @@ export interface ShoppingList {
   totalCost?: number;
 }
 export interface WishList {
-  id: ObjectId;
+  uid?: ObjectId;
+  id?: ObjectId;
   ownerId?: { _id: User['id'] | Household['id']; name: string } | User['id'];
   items?: Item[];
   edibles?: EdibleItem[];

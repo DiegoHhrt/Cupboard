@@ -1,11 +1,23 @@
 <shared-nav-menu [household]="showHouseholdOnMenu"></shared-nav-menu>
-<div class="container">
+<div class="container mb-5">
   <user-info-display
     (togShowHOnMenu)="setShowHousehold($event)"
   ></user-info-display>
   <!-- TODO: Search component -->
   <shared-list-dashboard [reachEndpoint]="'user'"></shared-list-dashboard>
+  <div class="row text-center">
+    <h3>Wishlist</h3>
+  </div>
+  <ng-container *ngIf="wishlist.items!.length > 0; else NoItems">
+    <div class="row text-start" style="max-height: 350px; overflow-y: scroll">
+      <div class="col-3" *ngFor="let item of wishlist.items">
+        <shared-card [item]="item"></shared-card>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #NoItems>
+    <div class="text-center row">
+      <span>There's no items in your wishlist yet...</span>
+    </div>
+  </ng-template>
 </div>
-
-<!-- !Dashboard shared with list views + everything a household has + specialized comp for unique stuff-->
-<!-- Show user name or name (whatever is selected and locally stored) -->
