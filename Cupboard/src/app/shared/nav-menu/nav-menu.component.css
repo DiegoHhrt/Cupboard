@@ -7,16 +7,16 @@
   font-size: 30px;
 }
 .active-route{
-  background-color: var(--green-light);
-  color: var(--bg-dark);
+  background-color: var(--green-light) !important;
+  color: var(--bg-dark) !important;
 }
 button{
   /* background-color: #8671b6; */
   font-family: 'Palanquin' , sans-serif;
-  background-color: #7e6ba8;
+  background-color: #7e6ba8 !important;
   height: 45px;
 
 }
 button:hover{
-  background-color: var(--semi-grass);
+  background-color: var(--semi-grass) !important;
 }

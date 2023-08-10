@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 interface RouteLink {
-  name: 'Home' | 'My profile' | 'My household';
+  name: 'Home' | 'My profile' | 'My household' | string;
   route: '/home' | '/user' | '/household';
 }
 
@@ -12,6 +12,8 @@ interface RouteLink {
   styleUrls: ['./nav-menu.component.css'],
 })
 export class NavMenuComponent implements OnInit {
+  @Input() public household: false | string = false;
+
   private routeLinks: RouteLink[] = [
     {
       name: 'Home',
@@ -22,7 +24,8 @@ export class NavMenuComponent implements OnInit {
       route: '/user',
     },
     {
-      name: 'My household',
+      //TODO: Listen to household changes
+      name: this.household ? this.household : 'My household',
       route: '/household',
     },
   ];
