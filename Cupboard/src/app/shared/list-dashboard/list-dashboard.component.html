@@ -1,0 +1,39 @@
+<!-- TODO implement toggle edit -->
+<div class="row text-center mb-5 mt-4">
+  <div class="col-6">
+    <div class="row">
+      <h3>Inventory</h3>
+    </div>
+    <div class="row text-start" style="max-height: 500px; overflow-y: scroll">
+      <div class="col-6" *ngFor="let item of inventory!.items">
+        <shared-card [item]="item"></shared-card>
+      </div>
+    </div>
+  </div>
+  <div class="col-6">
+    <div class="row">
+      <h3>Shopping List</h3>
+    </div>
+    <div class="row">
+      <div class="col-6 text-end">
+        <span>Budget: </span>
+      </div>
+      <div class="col-6 text-start">
+        <span>Cost: {{ shoppingList.totalCost | currency }}</span>
+      </div>
+    </div>
+    <div class="row text-start" style="max-height: 500px; overflow-y: scroll">
+      <div class="col-6" *ngFor="let item of shoppingList!.items">
+        <shared-card [item]="item"></shared-card>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row text-center">
+  <h3>History</h3>
+</div>
+<div class="row text-start" style="max-height: 350px; overflow-y: scroll">
+  <div class="col-3" *ngFor="let item of inventory!.history">
+    <shared-card [item]="item"></shared-card>
+  </div>
+</div>
