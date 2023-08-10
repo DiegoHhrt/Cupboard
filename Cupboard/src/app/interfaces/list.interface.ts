@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { User, Household, EdibleItem, Item } from './';
+import { User, Household, EdibleItem, Item, PlannedFoods } from './';
 
 export interface Inventory {
   uid?: ObjectId;
@@ -33,11 +33,15 @@ export interface WishList {
   edibles?: EdibleItem[];
 }
 
-export type ListTypes = 'inventory' | 'shopping-list' | 'wishlist';
+export type ListTypes =
+  | 'inventory'
+  | 'shopping-list'
+  | 'wishlist'
+  | 'planned-foods';
 
 export interface ListResponse {
   ok: boolean;
   listType: ListTypes;
-  list: Inventory | ShoppingList | WishList;
+  list: Inventory | ShoppingList | WishList | PlannedFoods;
   msg?: string;
 }

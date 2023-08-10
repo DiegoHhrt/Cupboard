@@ -17,8 +17,10 @@ export class MainPageComponent implements OnInit {
     this.householdService.getSelf().subscribe((response) => {
       if (response.ok) this.household = response.household;
     });
-    // this.householdService.getHouseholdList('wishlist').subscribe((response) => {
-    //   if (response.ok) this.plannedFoods = response.list;
-    // });
+    this.householdService
+      .getHouseholdList('planned-foods')
+      .subscribe((response) => {
+        if (response.ok) this.plannedFoods = response.list;
+      });
   }
 }

@@ -8,11 +8,16 @@ import {
   User,
 } from './';
 
+interface PopulatedUser {
+  name: string;
+}
 export interface Household {
   id: ObjectId;
   name?: string;
-  members?: User['id'][] | { name: string };
-  admins?: User['id'][] | { name: string };
+  // members?: User['id'][] | PopulatedUser[];
+  // admins?: User['id'][] | PopulatedUser[];
+  members?: PopulatedUser[];
+  admins?: PopulatedUser[];
   shoppingList?: ShoppingList['id'];
   inventory?: Inventory['id'];
   plannedFoods?: PlannedFoods['id'][];
@@ -23,7 +28,8 @@ export interface Household {
 }
 
 export interface PlannedFoods {
-  id: ObjectId;
+  uid?: ObjectId;
+  id?: ObjectId;
   name?: string;
   ingredients?: Item['id'][];
   recipeLink?: string;
