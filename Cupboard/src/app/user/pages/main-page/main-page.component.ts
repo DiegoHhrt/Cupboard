@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { UserInfoService } from '../../../services/user-info.service';
 import { Inventory, ShoppingList, User, WishList } from 'src/app/interfaces';
 import { switchMap } from 'rxjs';
@@ -9,21 +9,30 @@ import { switchMap } from 'rxjs';
   styleUrls: ['./main-page.component.css'],
 })
 export class MainPageComponent implements OnInit {
+  private userService = inject(UserInfoService);
+
   public showHouseholdOnMenu: false | string = false;
 
-  public user?: User;
+  public user = signal<User | undefined>(undefined);
+  public isUserLoaded = signal<boolean>(false);
   public wishlist!: WishList;
 
-  constructor(private userService: UserInfoService) {}
-
   ngOnInit(): void {
-    this.userService.getSelf().subscribe((response) => {
-      if (response.ok) this.user = response.user;
-    });
+    this.userService
+      .getSelf()
+      .pipe(
+        switchMap(({ ok, user }) => {
+          if (!ok) this.isUserLoaded.set(false);
+          this.isUserLoaded.set(true);
+          this.user.set(user);
 
-    this.userService.getUserList('wishlist').subscribe((response) => {
-      if (response.ok) this.wishlist = response.list;
-    });
+          return this.userService.getUserList('wishlist');
+        })
+      )
+      .subscribe(({ ok, list }) => {
+        if (!ok) return;
+        this.wishlist = list;
+      });
   }
 
   public setShowHousehold(show: boolean): void {

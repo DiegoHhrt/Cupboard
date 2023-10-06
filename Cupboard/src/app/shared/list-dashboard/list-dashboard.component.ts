@@ -1,4 +1,10 @@
-import { AfterContentInit, Component, Input, OnInit } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  Input,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { Inventory, ShoppingList } from 'src/app/interfaces';
 import { HouseholdInfoService } from 'src/app/services/household-info.service';
 import { UserInfoService } from 'src/app/services/user-info.service';
@@ -10,9 +16,11 @@ import { UserInfoService } from 'src/app/services/user-info.service';
 })
 export class ListDashboardComponent implements OnInit {
   @Input() public reachEndpoint: 'user' | 'household' = 'user';
+  @Input() public budget?: number;
 
-  public inventory!: Inventory;
-  public shoppingList!: ShoppingList;
+  public inventory = signal<Inventory | undefined>(undefined);
+  public shoppingList = signal<ShoppingList | undefined>(undefined);
+  public editing: boolean = false;
 
   constructor(
     private userService: UserInfoService,
@@ -21,24 +29,32 @@ export class ListDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.reachEndpoint === 'user') {
-      this.userService.getUserList('inventory').subscribe((response) => {
-        if (response.ok) this.inventory = response.list;
+      this.userService.getUserList('inventory').subscribe(({ ok, list }) => {
+        if (!ok) return;
+        this.inventory.set(list);
       });
-      this.userService.getUserList('shopping-list').subscribe((response) => {
-        if (response.ok) this.shoppingList = response.list;
-      });
+      this.userService
+        .getUserList('shopping-list')
+        .subscribe(({ ok, list }) => {
+          if (!ok) return;
+          this.shoppingList.set(list);
+        });
     }
     if (this.reachEndpoint === 'household') {
       this.householdService
         .getHouseholdList('inventory')
-        .subscribe((response) => {
-          if (response.ok) this.inventory = response.list;
+        .subscribe(({ ok, list }) => {
+          if (!ok) return;
+          this.inventory.set(list);
         });
       this.householdService
         .getHouseholdList('shopping-list')
-        .subscribe((response) => {
-          if (response.ok) this.shoppingList = response.list;
+        .subscribe(({ ok, list }) => {
+          if (!ok) return;
+          this.shoppingList.set(list);
         });
     }
   }
+
+  public toggleEditMode = (changeMode: boolean) => (this.editing = changeMode);
 }
