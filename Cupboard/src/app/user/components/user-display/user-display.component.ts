@@ -11,20 +11,20 @@ export class UserDisplayComponent implements OnInit {
   @Output()
   public togShowHOnMenu: EventEmitter<boolean> = new EventEmitter();
 
-  public user?: User;
+  @Input() public user!: User;
   public editing: boolean = false;
 
   constructor(private userService: UserInfoService) {}
 
   ngOnInit(): void {
-    this.userService.getSelf().subscribe((response) => {
-      if (response.ok) {
-        this.user = response.user!;
-        // this.sharedLists = [this.user!.inventory, this.user!.shoppingList]!; TODO: Call list endpoint
-      } else {
-        console.log(response.msg);
-      }
-    });
+    // this.userService.getSelf().subscribe((response) => {
+    //   if (response.ok) {
+    //     this.user = response.user!;
+    //     // this.sharedLists = [this.user!.inventory, this.user!.shoppingList]!; TODO: Call list endpoint
+    //   } else {
+    //     console.log(response.msg);
+    //   }
+    // });
   }
 
   public toggleEditMode = (changeMode: boolean): boolean =>

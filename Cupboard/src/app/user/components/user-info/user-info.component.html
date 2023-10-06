@@ -11,9 +11,9 @@
     <h2>Email:</h2>
     <h3>{{ user!.email }}</h3>
   </div>
-  <div class="col">
+  <div class="col" *ngIf="user.household">
     <h2>Household Name:</h2>
-    <h3>{{ user!.name }}</h3>
+    <h3>{{ householdName }}</h3>
   </div>
 </div>
 <div class="row align-items-center mb-4">

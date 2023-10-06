@@ -5,8 +5,9 @@
 <ng-template #loadedInformation>
   <div class="container mb-5">
     <user-info-display
+      [user]="user()!"
       (togShowHOnMenu)="setShowHousehold($event)"
-    ></user-info-display>
+    />
     <!-- TODO: Search component -->
     <shared-list-dashboard
       [reachEndpoint]="'user'"

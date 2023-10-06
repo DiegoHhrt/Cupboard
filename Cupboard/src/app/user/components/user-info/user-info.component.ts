@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { User } from 'src/app/interfaces';
 import { UserInfoService } from 'src/app/services/user-info.service';
 import { DisplayPreferences } from '../../../interfaces/display-preferences.type';
+import { HouseholdInfoService } from 'src/app/services/household-info.service';
 
 @Component({
   selector: 'user-info',
@@ -20,10 +21,21 @@ export class UserInfoComponent implements OnInit {
   public showUserName: boolean = true;
   public showEmail: boolean = true;
   public showHouseholdOnMenu: boolean = false;
+  public householdName: string = '';
 
-  constructor(private userService: UserInfoService) {}
+  constructor(
+    private userService: UserInfoService,
+    private householdService: HouseholdInfoService
+  ) {}
 
   ngOnInit(): void {
+    if (this.user.household !== null) {
+      this.householdService.getSelf().subscribe(({ household }) => {
+        console.log(household);
+        this.householdName = household!.name!;
+      });
+    }
+
     const preferences: DisplayPreferences =
       this.userService.loadDisplayPreferences();
     if (preferences.name !== undefined) {
