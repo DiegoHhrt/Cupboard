@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HouseholdInfoResponse, ListResponse, ListTypes } from '../interfaces';
-import { Observable } from 'rxjs';
+import { Observable, catchError, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +24,9 @@ export class HouseholdInfoService {
   public getSelf = (): Observable<HouseholdInfoResponse> => {
     const url = `${this.baseUrl}/household`;
     const headers = this.setTokenHeader();
-    return this.http.get<HouseholdInfoResponse>(url, { headers });
+    return this.http
+      .get<HouseholdInfoResponse>(url, { headers })
+      .pipe(catchError((err) => of({ ok: false })));
   };
 
   public getHouseholdList = (listType: ListTypes): Observable<ListResponse> => {

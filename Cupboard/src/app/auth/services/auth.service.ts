@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, of, tap } from 'rxjs';
+import { Observable, catchError, map, of, tap } from 'rxjs';
 import {
   UserLoginData,
   UserLoginResp,
@@ -49,6 +49,22 @@ export class AuthService {
         if (ok) localStorage.setItem('token', token!);
       }),
       catchError(({ ok, error }) => of(this.handleError(ok, error)))
+    );
+  };
+
+  public validateToken = (): Observable<boolean> => {
+    const url = `${this.baseUrl}/auth/renew`;
+
+    const headers = {
+      'x-token': localStorage.getItem('token') || '',
+    };
+
+    return this.http.get<UserLoginResp>(url, { headers }).pipe(
+      map(({ ok, token }) => {
+        if (ok) localStorage.setItem('token', token!);
+        return ok;
+      }),
+      catchError(() => of(false))
     );
   };
 }
