@@ -10,12 +10,12 @@ const ItemSchema = new Schema({
         required: true,
     },
     category: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Category',
-            required: true,
-            validate: [arrayMin, 'At least one category is required'],
-        },
+        // {
+        //     type: Schema.Types.ObjectId,
+        //     ref: 'Category',
+        //     required: true,
+        //     validate: [arrayMin, 'At least one category is required'],
+        // },
     ],
     purchaseDate: {
         type: Date,

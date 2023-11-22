@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserSignUpData } from '../../interfaces';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'auth-sign-up',
@@ -17,10 +18,10 @@ export class SignUpComponent {
   ) {}
 
   SignUpForm: FormGroup = this.fb.group({
-    name: ['Primer front owo', [Validators.required]],
-    userName: ['1stFront', [Validators.required]],
-    email: ['test11@gmail.com', [Validators.required]],
-    password: ['1234567', [Validators.required]],
+    name: ['', [Validators.required]],
+    userName: ['', [Validators.required]],
+    email: ['', [Validators.required]],
+    password: ['', [Validators.required]],
   });
 
   public signUp = () => {
@@ -29,8 +30,11 @@ export class SignUpComponent {
       if (resp.ok) this.router.navigateByUrl('/home');
       else {
         const { msg } = resp;
-        //TODO: show error message
-        console.log(msg);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: msg || 'An unknown error has occurred',
+        });
       }
     });
   };

@@ -1,23 +1,29 @@
 <shared-nav-menu></shared-nav-menu>
-<div class="container mb-5">
-  <household-info-display></household-info-display>
-  <shared-list-dashboard [reachEndpoint]="'household'"></shared-list-dashboard>
-  <!-- <div class="row text-center mt-5">
-    <h3>Planned foods</h3>
-  </div> -->
-  <!-- <ng-container *ngIf="plannedFoods.ingredients!.length > 0">
-    <div class="row text-start" style="max-height: 350px; overflow-y: scroll">
-      <div class="col-3" *ngFor="let item of plannedFoods.ingredients">
-        <shared-card [item]="item"></shared-card>
-      </div>
-    </div>
-  </ng-container> -->
-  <!-- <ng-template #NoItems>
-    <div class="text-center row">
-      <span>There's no items in your planned foods yet...</span>
-    </div>
-  </ng-template> -->
-</div>
+<shared-loading-content *ngIf="!household(); else loadedInformation" />
 
-<!-- !Dashboard shared with list views + everything a household has + specialized comp for unique stuff-->
-<!--  -->
+<ng-template #loadedInformation>
+  <div class="container mb-5">
+    <household-info-display [household]="household()!"></household-info-display>
+    <shared-list-dashboard
+      [reachEndpoint]="'household'"
+    ></shared-list-dashboard>
+    <!-- <div class="row text-center mt-5">
+      <h3>Planned foods</h3>
+    </div> -->
+    <!-- <ng-container *ngIf="plannedFoods.ingredients!.length > 0">
+      <div class="row text-start" style="max-height: 350px; overflow-y: scroll">
+        <div class="col-3" *ngFor="let item of plannedFoods.ingredients">
+          <shared-card [item]="item"></shared-card>
+        </div>
+      </div>
+    </ng-container> -->
+    <!-- <ng-template #NoItems>
+      <div class="text-center row">
+        <span>There's no items in your planned foods yet...</span>
+      </div>
+    </ng-template> -->
+  </div>
+
+  <!-- !Dashboard shared with list views + everything a household has + specialized comp for unique stuff-->
+  <!--  -->
+</ng-template>

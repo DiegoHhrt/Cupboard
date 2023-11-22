@@ -22,5 +22,15 @@
         {{ unActiveLink.name }}
       </button>
     </div>
+    <div class="col">
+      <button
+        (click)="logout()"
+        class="btn"
+        [routerLink]="['/login']"
+        style="border-radius: 500px"
+      >
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
   </div>
 </nav>

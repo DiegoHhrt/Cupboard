@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { UserLoginData } from '../../interfaces';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'auth-login',
@@ -27,8 +28,11 @@ export class LoginComponent {
       if (resp.ok) this.router.navigateByUrl('/home');
       else {
         const { msg } = resp;
-        //TODO: show error message
-        console.log(msg);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: msg || 'An unknown error has occurred',
+        });
       }
     });
   };

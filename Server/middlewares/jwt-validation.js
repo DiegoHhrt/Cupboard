@@ -24,6 +24,7 @@ const validateJWT = async (req, resp, next) => {
             });
         }
 
+        req.uid = uid;
         req.authUser = authUser;
         req.body.requestorId = authUser.id;
         next();

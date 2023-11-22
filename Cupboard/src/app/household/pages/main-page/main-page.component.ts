@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Household, PlannedFoods } from 'src/app/interfaces';
 import { HouseholdInfoService } from 'src/app/services/household-info.service';
 
@@ -8,14 +8,14 @@ import { HouseholdInfoService } from 'src/app/services/household-info.service';
   styleUrls: ['./main-page.component.css'],
 })
 export class MainPageComponent implements OnInit {
-  public household?: Household;
+  public household = signal<Household | undefined>(undefined);
   public plannedFoods!: PlannedFoods;
 
   constructor(private householdService: HouseholdInfoService) {}
 
   ngOnInit(): void {
-    this.householdService.getSelf().subscribe((response) => {
-      if (response.ok) this.household = response.household;
+    this.householdService.getSelf().subscribe(({ ok, household }) => {
+      if (ok) this.household.set(household);
     });
     this.householdService
       .getHouseholdList('planned-foods')

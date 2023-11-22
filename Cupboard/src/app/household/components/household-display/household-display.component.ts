@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal, inject, Input } from '@angular/core';
 import { Household } from 'src/app/interfaces';
 import { HouseholdInfoService } from 'src/app/services/household-info.service';
 
@@ -8,16 +8,12 @@ import { HouseholdInfoService } from 'src/app/services/household-info.service';
   styleUrls: ['./household-display.component.css'],
 })
 export class HouseholdDisplayComponent implements OnInit {
-  public household!: Household;
+  private householdService = inject(HouseholdInfoService);
+
+  @Input() public household!: Household;
   public editing: boolean = false;
 
-  constructor(private householdService: HouseholdInfoService) {}
-
-  ngOnInit(): void {
-    this.householdService.getSelf().subscribe((response) => {
-      if (response.ok) this.household = response.household!;
-    });
-  }
+  ngOnInit(): void {}
   public toggleEditMode = (changeMode: boolean): boolean =>
     (this.editing = changeMode);
 }

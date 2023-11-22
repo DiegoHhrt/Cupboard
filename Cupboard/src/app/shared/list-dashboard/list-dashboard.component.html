@@ -4,6 +4,7 @@
   <div class="col-6">
     <div class="row">
       <h3>Inventory</h3>
+      <!-- TODO: Adding button -->
     </div>
     <ng-container
       *ngIf="inventory() && inventory()!.items!.length > 0; else NoInvItems"
@@ -18,6 +19,7 @@
     <ng-template #NoInvItems>
       <div class="text-center row">
         <span>There's no items in your inventory yet...</span>
+        <!-- TODO: Adding item button -->
       </div>
     </ng-template>
   </div>
@@ -35,9 +37,10 @@
         <div class="col-6 text-end">
           <span
             >Budget:
-            <strong>
-              {{ budget || "No budget allocated yet" | currency }}
+            <strong *ngIf="budget">
+              {{ budget | currency }}
             </strong>
+            <strong *ngIf="!budget"> No budget allocated yet </strong>
           </span>
         </div>
         <div class="col-6 text-start">

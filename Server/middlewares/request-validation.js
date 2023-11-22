@@ -73,7 +73,8 @@ const validateUserListType = async (req, resp, next) => {
                 .populate('items', 'name')
                 .populate('history', 'name');
             //Trim history items to the limit and skip the first items
-            if (list) list.history = list.history.slice(skip, skip + lim);
+            // TODO: Fix history (validate existence?)
+            // if (list) list.history = list.history.slice(skip, skip + lim);
         } else if (listType === 'shopping-list') {
             list = await ShoppingList.findOne({ ownerId: user.id })
                 .populate('ownerId', 'name')
@@ -119,6 +120,13 @@ const validateHouseholdListType = async (req, resp, next) => {
     const { listType } = req.params;
     const { household: householdId } = req.authUser;
     try {
+        if (!householdId) {
+            return resp.status(400).json({
+                ok: false,
+                msg: 'User does not belong to a household',
+            });
+        }
+
         let list;
         //Get list according to list type
         //TODO: Populate correctly items and history

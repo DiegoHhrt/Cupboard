@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ObjectId } from 'mongodb';
 import { Item } from 'src/app/interfaces';
 
 @Component({
@@ -8,8 +9,13 @@ import { Item } from 'src/app/interfaces';
 })
 export class CardComponent {
   @Input() item!: Item;
+  @Output()
+  public onToggleEditMode: EventEmitter<boolean> = new EventEmitter();
+
+  public editing: boolean = false;
+
   constructor() {}
 
-  public toggleEdit = () => {}; //TODO: Implement
+  public toggleEdit = () => (this.editing = !this.editing);
   public deleteItem = () => {}; //TODO: Implement
 }

@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { Household, Inventory, ShoppingList, WishList } from './';
+import { AuthErrors, UpdateErrors } from '../auth/interfaces';
 
 export interface User {
   id: ObjectId;
@@ -15,8 +16,17 @@ export interface User {
   status?: boolean;
 }
 
+export interface UserInfoData {
+  name?: string;
+  userName?: string;
+  email?: string;
+  password?: string;
+  budget?: number;
+}
+
 export interface UserInfoResponse {
   ok: boolean;
   user?: User;
   msg?: string;
+  errors?: AuthErrors;
 }

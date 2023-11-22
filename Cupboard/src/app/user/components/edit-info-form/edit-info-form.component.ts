@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { User } from 'src/app/interfaces';
+import { User, UserInfoData } from 'src/app/interfaces';
 import { UserInfoService } from 'src/app/services/user-info.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'user-edit-info-form',
@@ -21,15 +22,56 @@ export class EditInfoFormComponent {
   ) {}
 
   UpdateForm: FormGroup = this.fb.group({
-    name: ['', [Validators.required]],
-    userName: ['', [Validators.required]],
-    email: ['', [Validators.required]],
-    password: ['', [Validators.required]],
-    budget: ['', [Validators.required]],
+    name: [, []],
+    userName: [, []],
+    email: [, []],
+    password: [, []],
+    budget: [, []],
   });
 
   public updateInfo = () => {
-    console.log('update');
+    if (this.UpdateForm.invalid) return;
+
+    //TODO: Improve validation
+    const updateData: UserInfoData = {};
+    if (
+      this.UpdateForm.get('name')?.dirty &&
+      this.UpdateForm.get('name')?.value.length > 0
+    )
+      updateData.name = this.UpdateForm.get('name')?.value;
+    if (
+      this.UpdateForm.get('userName')?.dirty &&
+      this.UpdateForm.get('userName')?.value.length > 0
+    )
+      updateData.userName = this.UpdateForm.get('userName')?.value;
+    if (
+      this.UpdateForm.get('email')?.dirty &&
+      this.UpdateForm.get('email')?.value.length > 0
+    )
+      updateData.email = this.UpdateForm.get('email')?.value;
+    if (
+      this.UpdateForm.get('password')?.dirty &&
+      this.UpdateForm.get('password')?.value.length > 0
+    )
+      updateData.password = this.UpdateForm.get('password')?.value;
+    if (this.UpdateForm.get('budget')?.dirty)
+      updateData.budget = this.UpdateForm.get('budget')?.value;
+
+    //If no changes made, exit edit mode
+    if (Object.keys(updateData).length === 0) return this.exitEditMode();
+
+    this.userService.updateSelf(updateData).subscribe((response) => {
+      if (response.ok) {
+        location.reload();
+        this.exitEditMode();
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: response.msg || 'An unknown error has occurred',
+        });
+      }
+    });
   };
 
   public exitEditMode = () => {
