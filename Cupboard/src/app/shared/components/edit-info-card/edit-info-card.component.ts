@@ -3,7 +3,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 @Component({
   selector: 'shared-edit-info-card',
   templateUrl: './edit-info-card.component.html',
-  styleUrls: ['./edit-info-card.component.css'],
+  styleUrls: ['./edit-info-card.component.scss'],
 })
 export class EditInfoCardComponent {
   @Output()

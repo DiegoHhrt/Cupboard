@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { User, UserInfoData } from 'src/app/interfaces';
@@ -8,9 +8,9 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'user-edit-info-form',
   templateUrl: './edit-info-form.component.html',
-  styleUrls: ['./edit-info-form.component.css'],
+  styleUrls: ['./edit-info-form.component.scss'],
 })
-export class EditInfoFormComponent {
+export class EditInfoFormComponent implements OnInit {
   @Input() public user!: User;
 
   @Output() public onToggleEditMode: EventEmitter<boolean> = new EventEmitter();
@@ -28,6 +28,10 @@ export class EditInfoFormComponent {
     password: [, []],
     budget: [, []],
   });
+
+  ngOnInit() {
+    console.log(this.user);
+  }
 
   public updateInfo = () => {
     if (this.UpdateForm.invalid) return;

@@ -5,7 +5,7 @@ import { HouseholdInfoService } from 'src/app/services/household-info.service';
 @Component({
   selector: 'household-main-page',
   templateUrl: './main-page.component.html',
-  styleUrls: ['./main-page.component.css'],
+  styleUrls: ['./main-page.component.scss'],
 })
 export class MainPageComponent implements OnInit {
   public household = signal<Household | undefined>(undefined);

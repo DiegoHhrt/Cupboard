@@ -9,6 +9,7 @@ import { CardComponent } from './components/card/card.component';
 import { ItemCreationComponent } from './item-creation/item-creation.component';
 import { EditInfoCardComponent } from './components/edit-info-card/edit-info-card.component';
 import { LoadingContentComponent } from './components/loading-content/loading-content.component';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -20,13 +21,21 @@ import { LoadingContentComponent } from './components/loading-content/loading-co
     EditInfoCardComponent,
     LoadingContentComponent,
   ],
-  imports: [CommonModule, RouterModule, MaterialModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    //Material modules
+    MaterialModule,
+    MatInputModule,
+  ],
   exports: [
     NavMenuComponent,
     SearchComponent,
     ListDashboardComponent,
     CardComponent,
     LoadingContentComponent,
+    //Material modules
+    MatInputModule,
   ],
 })
 export class SharedModule {}

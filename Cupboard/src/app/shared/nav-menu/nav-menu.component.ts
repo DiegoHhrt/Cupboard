@@ -10,7 +10,7 @@ interface RouteLink {
 @Component({
   selector: 'shared-nav-menu',
   templateUrl: './nav-menu.component.html',
-  styleUrls: ['./nav-menu.component.css'],
+  styleUrls: ['./nav-menu.component.scss'],
 })
 export class NavMenuComponent implements OnInit {
   @Input() public household: false | string = false;

@@ -12,7 +12,7 @@ import { UserInfoService } from 'src/app/services/user-info.service';
 @Component({
   selector: 'shared-list-dashboard',
   templateUrl: './list-dashboard.component.html',
-  styleUrls: ['./list-dashboard.component.css'],
+  styleUrls: ['./list-dashboard.component.scss'],
 })
 export class ListDashboardComponent implements OnInit {
   @Input() public reachEndpoint: 'user' | 'household' = 'user';

@@ -4,7 +4,7 @@ import { Household } from '../../../interfaces/household.interface';
 @Component({
   selector: 'household-info',
   templateUrl: './household-info.component.html',
-  styleUrls: ['./household-info.component.css'],
+  styleUrls: ['./household-info.component.scss'],
 })
 export class HouseholdInfoComponent implements OnInit {
   @Input() public household!: Household;

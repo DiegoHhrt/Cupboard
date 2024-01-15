@@ -5,7 +5,7 @@ import { HouseholdInfoService } from 'src/app/services/household-info.service';
 @Component({
   selector: 'household-info-display',
   templateUrl: './household-display.component.html',
-  styleUrls: ['./household-display.component.css'],
+  styleUrls: ['./household-display.component.scss'],
 })
 export class HouseholdDisplayComponent implements OnInit {
   private householdService = inject(HouseholdInfoService);

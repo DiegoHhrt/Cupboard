@@ -7,7 +7,7 @@ import { HouseholdInfoService } from 'src/app/services/household-info.service';
 @Component({
   selector: 'household-edit-info-form',
   templateUrl: './edit-info-form.component.html',
-  styleUrls: ['./edit-info-form.component.css'],
+  styleUrls: ['./edit-info-form.component.scss'],
 })
 export class EditInfoFormComponent {
   @Input() public household!: Household;

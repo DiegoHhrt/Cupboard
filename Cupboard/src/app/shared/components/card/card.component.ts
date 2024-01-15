@@ -5,7 +5,7 @@ import { Item } from 'src/app/interfaces';
 @Component({
   selector: 'shared-card',
   templateUrl: './card.component.html',
-  styleUrls: ['./card.component.css'],
+  styleUrls: ['./card.component.scss'],
 })
 export class CardComponent {
   @Input() item!: Item;

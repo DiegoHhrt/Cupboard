@@ -7,7 +7,7 @@ import { HouseholdInfoService } from 'src/app/services/household-info.service';
 @Component({
   selector: 'user-info',
   templateUrl: './user-info.component.html',
-  styleUrls: ['./user-info.component.css'],
+  styleUrls: ['./user-info.component.scss'],
 })
 export class UserInfoComponent implements OnInit {
   @Input() public user!: User;

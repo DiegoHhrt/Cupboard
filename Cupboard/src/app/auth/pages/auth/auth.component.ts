@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'auth-main',
   template: ` <router-outlet></router-outlet>`,
+  styleUrls: ['./auth.component.scss'],
 })
 export class AuthComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) {}
