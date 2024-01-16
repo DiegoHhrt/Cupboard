@@ -15,6 +15,7 @@
     </div>
     <user-edit-info-form
       [user]="user"
+      (onupdateUserInfo)="updateUserInfo()"
       (onToggleEditMode)="toggleEditMode($event)"
     ></user-edit-info-form>
   </ng-template>

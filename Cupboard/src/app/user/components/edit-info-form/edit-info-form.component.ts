@@ -13,7 +13,11 @@ import Swal from 'sweetalert2';
 export class EditInfoFormComponent implements OnInit {
   @Input() public user!: User;
 
-  @Output() public onToggleEditMode: EventEmitter<boolean> = new EventEmitter();
+  @Output()
+  private onToggleEditMode: EventEmitter<boolean> = new EventEmitter();
+
+  @Output()
+  private onupdateUserInfo: EventEmitter<boolean> = new EventEmitter();
 
   constructor(
     private fb: FormBuilder,
@@ -26,11 +30,17 @@ export class EditInfoFormComponent implements OnInit {
     userName: [, []],
     email: [, []],
     password: [, []],
-    budget: [, []],
+    budget: [, [Validators.min(0)]],
   });
 
   ngOnInit() {
-    console.log(this.user);
+    this.UpdateForm.setValue({
+      name: this.user.name,
+      userName: this.user.userName,
+      email: this.user.email,
+      password: '',
+      budget: this.user.budget,
+    });
   }
 
   public updateInfo = () => {
@@ -66,7 +76,7 @@ export class EditInfoFormComponent implements OnInit {
 
     this.userService.updateSelf(updateData).subscribe((response) => {
       if (response.ok) {
-        location.reload();
+        this.onupdateUserInfo.emit(true);
         this.exitEditMode();
       } else {
         Swal.fire({
@@ -81,4 +91,7 @@ export class EditInfoFormComponent implements OnInit {
   public exitEditMode = () => {
     this.onToggleEditMode.emit(false);
   };
+
+  public numberOnly = (pressedKey: number) =>
+    !(pressedKey > 31 && (pressedKey < 48 || pressedKey > 57));
 }

@@ -3,6 +3,8 @@ import { UserInfoService } from '../../../services/user-info.service';
 import { Inventory, ShoppingList, User, WishList } from 'src/app/interfaces';
 import { switchMap } from 'rxjs';
 
+//TODO: subscription manager
+
 @Component({
   selector: 'user-main-page',
   templateUrl: './main-page.component.html',
@@ -18,6 +20,10 @@ export class MainPageComponent implements OnInit {
   public wishlist!: WishList;
 
   ngOnInit(): void {
+    this.getUserInfo();
+  }
+
+  private getUserInfo = () =>
     this.userService
       .getSelf()
       .pipe(
@@ -33,11 +39,12 @@ export class MainPageComponent implements OnInit {
         if (!ok) return;
         this.wishlist = list;
       });
-  }
 
   public setShowHousehold(show: boolean): void {
     //TODO: Call household endpoint
     if (show) this.showHouseholdOnMenu = 'A name owo';
     else this.showHouseholdOnMenu = false;
   }
+
+  public updateUserInfo = () => this.getUserInfo();
 }

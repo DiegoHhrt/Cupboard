@@ -7,9 +7,11 @@
   <div class="container mb-5">
     <user-info-display
       [user]="user()!"
+      (onupdateUserInfo)="updateUserInfo()"
       (togShowHOnMenu)="setShowHousehold($event)"
     />
     <!-- TODO: Search component -->
+    <!-- TODO: Loading spinner -->
     <shared-list-dashboard
       [reachEndpoint]="'user'"
       [budget]="user()!.budget"

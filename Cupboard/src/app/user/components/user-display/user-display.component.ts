@@ -10,6 +10,8 @@ import { UserInfoService } from 'src/app/services/user-info.service';
 export class UserDisplayComponent implements OnInit {
   @Output()
   public togShowHOnMenu: EventEmitter<boolean> = new EventEmitter();
+  @Output()
+  private onupdateUserInfo: EventEmitter<boolean> = new EventEmitter();
 
   @Input() public user!: User;
   public editing: boolean = false;
@@ -23,4 +25,5 @@ export class UserDisplayComponent implements OnInit {
   public toggleShowHouseholdOnMenu = (toggle: boolean): void => {
     this.togShowHOnMenu.emit(toggle);
   };
+  public updateUserInfo = () => this.onupdateUserInfo.emit(true);
 }
