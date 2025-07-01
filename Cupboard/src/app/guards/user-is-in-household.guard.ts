@@ -11,6 +11,7 @@ const HouseholdValidation = (): Observable<boolean> => {
   return householdService.getSelf().pipe(
     map(({ ok }) => {
       if (!ok) {
+        //TODO: Allow user to create a household
         router.navigate(['/home']);
         return false;
       }

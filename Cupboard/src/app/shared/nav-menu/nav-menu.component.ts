@@ -4,7 +4,7 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 
 interface RouteLink {
   name: 'Home' | 'My profile' | 'My household' | string;
-  route: '/home' | '/user' | '/household';
+  route: '/home' | '/user' | '/household' | '/household/join-create';
 }
 
 @Component({
@@ -27,8 +27,8 @@ export class NavMenuComponent implements OnInit {
     {
       //TODO: Listen to household changes
       //TODO: If user has no household, show nothing
-      name: this.household ? this.household : 'My household',
-      route: '/household',
+      name: this.household ? this.household : 'Join or create household',
+      route: this.household ? '/household' : '/household/join-create',
     },
   ];
 
